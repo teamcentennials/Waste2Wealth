@@ -229,35 +229,7 @@ fun TasksLists(
                     modifier = Modifier.padding(top = 10.dp, bottom = 10.dp, start = 20.dp),
                 )
             }
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.BottomStart
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.White)
-                ) {
-                    Button(
-                        onClick = { /*TODO*/ }, colors = ButtonDefaults.buttonColors(
-                            backgroundColor = backGround,
-                            disabledBackgroundColor = backGround.copy(0.5f)
-                        ), shape = RoundedCornerShape(10.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp),
-                        enabled = false
-                    ) {
-                        Text(
-                            text = "END TRIP",
-                            color = Color.White,
-                            modifier = Modifier.padding(10.dp),
-                            fontFamily = monteNormal
-                        )
-                    }
-                }
-            }
+
         }
     }
 
