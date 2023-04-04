@@ -309,7 +309,7 @@ fun DialogBox(isVisible: Boolean, successRequest: () -> Unit, dismissRequest: ()
                             overflow = TextOverflow.Ellipsis
                         )
                         Text(
-                            text = "The Location of Delivery Point and your location are not matching. " +
+                            text = "The Location of Waste and your location are not matching. " +
                                     "Do you still want to continue check in ?",
                             textAlign = TextAlign.Center,
                             fontFamily = monteNormal,
