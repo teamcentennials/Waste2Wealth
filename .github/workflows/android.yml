@@ -1,0 +1,33 @@
+name: Android CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'android-sdk'
+
+      - name: Grant execute permission for Gradlew
+        run: chmod +x ./gradlew
+
+      - name: Build and test
+        run: ./gradlew build
+
