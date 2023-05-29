@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "335998282585",
+    "project_id": "waste2wealth-225f8",
+    "storage_bucket": "waste2wealth-225f8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335998282585:android:4425df7537fd6d64b93a48",
+        "android_client_info": {
+          "package_name": "app.waste2wealth.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "335998282585-ffdp7jqlc8tqu56dqj2j7ifflp67tu12.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAK61PJcM4_3fXrsaMG_l07lOGgBhB2KJE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "335998282585-ffdp7jqlc8tqu56dqj2j7ifflp67tu12.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

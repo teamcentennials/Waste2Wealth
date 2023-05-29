@@ -1,7 +1,11 @@
 package app.waste2wealth.com.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -30,10 +34,10 @@ fun AppBar(
     elevation: Dp = 9.dp,
 ) {
     TopAppBar(
-        backgroundColor = backGround,
-        elevation = elevation,
-        contentColor = Color.White,
-    ) {
+        title = {
+
+        }
+    )
         Row(modifier = Modifier
             .fillMaxWidth()
             .background(backGround),
@@ -65,7 +69,7 @@ fun AppBar(
             }
         }
     }
-}
+
 
 @Composable
 fun TasksListsAppBar(navHostController: NavHostController) {
@@ -87,10 +91,9 @@ fun TasksListsAppBar(navHostController: NavHostController) {
                 )
             }
         },
-        backgroundColor = backGround,
-        contentColor = Color.White
     )
 }
+
 
 @Composable
 fun TasksDetailsAppBar(
@@ -100,9 +103,9 @@ fun TasksDetailsAppBar(
     onClick: () -> Unit = {},
 ) {
     TopAppBar(
-        backgroundColor = backGround,
-        contentColor = Color.White
-    ) {
+        title = {
+        }
+    )
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Start,
@@ -134,6 +137,6 @@ fun TasksDetailsAppBar(
             }
         }
     }
-}
+
 
 

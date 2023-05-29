@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import app.waste2wealth.com.BuildConfig
+import com.google.android.datatransport.runtime.BuildConfig
 
 @Composable
 fun AppVersion() {
