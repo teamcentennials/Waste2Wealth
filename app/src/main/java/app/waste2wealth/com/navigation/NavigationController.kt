@@ -9,9 +9,11 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import app.waste2wealth.com.dashboard.DashBoardPage
+import app.waste2wealth.com.challenges.Community
+import app.waste2wealth.com.dashboard.NewDashboard
 import app.waste2wealth.com.failuretask.TaskUndelivered
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.login.CompleteProfile
@@ -25,12 +27,14 @@ import app.waste2wealth.com.tasksDetail.TasksDetails
 import app.waste2wealth.com.tasksList.TasksLists
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun NavigationController(scaffoldState: ScaffoldState, locationViewModel: LocationViewModel) {
-    val navController = rememberAnimatedNavController()
+fun NavigationController(
+    scaffoldState: ScaffoldState,
+    locationViewModel: LocationViewModel,
+    navController: NavHostController
+) {
     AnimatedNavHost(navController = navController, startDestination = Screens.Splash.route) {
         composable(
             route = Screens.LoginScreen.route,
@@ -93,7 +97,8 @@ fun NavigationController(scaffoldState: ScaffoldState, locationViewModel: Locati
             }
         ) {
 
-            DashBoardPage(navHostController = navController, locationViewModel = locationViewModel)
+            NewDashboard(navController = navController)
+//            DashBoardPage(navHostController = navController, locationViewModel = locationViewModel)
         }
         composable(Screens.Profile.route) {
             ProfileScreen(navHostController = navController)
@@ -110,6 +115,9 @@ fun NavigationController(scaffoldState: ScaffoldState, locationViewModel: Locati
         composable(Screens.SettingUp.route) {
             SettingUp(navHostController = navController)
 
+        }
+        composable(Screens.Community.route) {
+            Community()
         }
         composable(
             Screens.TaskDetail.route

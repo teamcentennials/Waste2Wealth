@@ -105,6 +105,7 @@ dependencies {
     //Dagger Hilt
     implementation(libs.dagger.hilt)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.appcompat)
     kapt(libs.dagger.hilt.kapt)
     implementation(libs.dagger.hilt.navigation)
 
@@ -114,6 +115,9 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.jet.firestore)
     implementation(libs.firebase.auth.ktx)
+
+    //Stacked Cards
+    implementation(libs.stacked.cards)
 
 
     implementation(libs.camera.core)

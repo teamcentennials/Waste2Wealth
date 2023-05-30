@@ -6,16 +6,19 @@ import android.content.IntentFilter
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelProvider
+import app.waste2wealth.com.bottombar.BottomBar
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.login.onboarding.SmsBroadcastReceiver
 import app.waste2wealth.com.login.onboarding.SmsBroadcastReceiver.SmsBroadcastReceiverListener
 import app.waste2wealth.com.navigation.NavigationController
 import app.waste2wealth.com.ui.theme.Waste2WealthTheme
-import app.waste2wealth.com.ui.theme.backGround
+import app.waste2wealth.com.ui.theme.appBackground
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,20 +28,25 @@ import javax.annotation.Nullable
 class MainActivity : ComponentActivity() {
     private lateinit var smsBroadcastReceiver: SmsBroadcastReceiver
     private lateinit var viewModel: LocationViewModel
+
+    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             Waste2WealthTheme {
                 val systemUiController = rememberSystemUiController()
-                systemUiController.setSystemBarsColor(backGround)
+                systemUiController.setSystemBarsColor(appBackground)
+                val navController = rememberAnimatedNavController()
                 viewModel = ViewModelProvider(this)[LocationViewModel::class.java]
-                Scaffold {
+                Scaffold(bottomBar = {
+                    BottomBar(navController = navController)
+                }) {
                     val locationViewModel: LocationViewModel = hiltViewModel()
                     println(it)
                     val scaffoldState = rememberScaffoldState()
                     val client = SmsRetriever.getClient(this)
                     client.startSmsUserConsent(null)
-                    NavigationController(scaffoldState, locationViewModel)
+                    NavigationController(scaffoldState, locationViewModel, navController)
 //                    CompleteProfile()
                 }
             }
