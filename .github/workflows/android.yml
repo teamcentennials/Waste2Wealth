@@ -4,29 +4,31 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   build:
-    name: Build and Test
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: 17
 
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          java-version: '17'
+    - name: Set up Android SDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'android-sdk'
 
-      - name: Set up Android SDK
-        uses: actions/setup-java@v2
-        with:
-          java-version: '17'
-          distribution: 'android-sdk'
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Grant execute permission for Gradlew
-        run: chmod +x ./gradlew
+    - name: Grant execute permission for Gradle wrapper
+      run: chmod +x ./gradlew
 
-      - name: Build and test
-        run: ./gradlew build
+    - name: Build
+      run: ./gradlew build
