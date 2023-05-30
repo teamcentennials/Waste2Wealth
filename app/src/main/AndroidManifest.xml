@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="com.google.android.gms.auth.api.phone.permission.READ_SMS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" />
 
@@ -16,9 +17,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/appicon"
+        android:icon="@drawable/ob1"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/appicon"
+        android:roundIcon="@drawable/ob1"
         android:supportsRtl="true"
         android:theme="@style/Theme.Waste2Wealth"
         tools:targetApi="31">
@@ -38,6 +39,9 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+            <meta-data
+                android:name="com.google.android.gms.auth.api.phone.receiver_permissions"
+                android:value="com.google.android.gms.auth.api.phone.permission.READ_SMS" />
         </activity>
     </application>
 

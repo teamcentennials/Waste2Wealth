@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     id("dagger.hilt.android.plugin")
     kotlin("kapt")
+    id("com.google.gms.google-services")
 }
 
 
@@ -106,6 +107,13 @@ dependencies {
     implementation(libs.androidx.material3)
     kapt(libs.dagger.hilt.kapt)
     implementation(libs.dagger.hilt.navigation)
+
+    //Firebase
+    implementation(libs.firebase.bom)
+    implementation(libs.play.services.auth)
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.jet.firestore)
+    implementation(libs.firebase.auth.ktx)
 
 
     implementation(libs.camera.core)

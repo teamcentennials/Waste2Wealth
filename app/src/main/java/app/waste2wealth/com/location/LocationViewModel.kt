@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import app.waste2wealth.com.qrcode.sensors.MeasurableSensors
 import com.google.android.gms.location.LocationServices
@@ -35,6 +36,8 @@ class LocationViewModel @Inject constructor(
             println("what is is Dark $isDark")
         }
     }
+
+    val result = MutableLiveData<String>()
 
     fun updateLocation() {
         viewModelScope.launch {

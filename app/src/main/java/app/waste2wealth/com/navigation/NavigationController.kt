@@ -14,7 +14,10 @@ import androidx.navigation.navArgument
 import app.waste2wealth.com.dashboard.DashBoardPage
 import app.waste2wealth.com.failuretask.TaskUndelivered
 import app.waste2wealth.com.location.LocationViewModel
+import app.waste2wealth.com.login.CompleteProfile
 import app.waste2wealth.com.login.LoginPage
+import app.waste2wealth.com.login.onboarding.Onboarding
+import app.waste2wealth.com.login.onboarding.SettingUp
 import app.waste2wealth.com.profile.ProfileScreen
 import app.waste2wealth.com.qrcode.ui.ScanQr
 import app.waste2wealth.com.successtask.DeliveryDetailsScreen
@@ -95,15 +98,26 @@ fun NavigationController(scaffoldState: ScaffoldState, locationViewModel: Locati
         composable(Screens.Profile.route) {
             ProfileScreen(navHostController = navController)
         }
+        composable(Screens.Onboarding.route) {
+            Onboarding(navHostController = navController)
+        }
         composable(Screens.TasksLists.route) {
             TasksLists(navHostController = navController)
         }
+        composable(Screens.CompleteProfile.route) {
+            CompleteProfile(navHostController = navController)
+        }
+        composable(Screens.SettingUp.route) {
+            SettingUp(navHostController = navController)
+
+        }
         composable(
             Screens.TaskDetail.route
-                .plus("?${TaskDetailsConstants.taskCode.value}={taskCode}" +
-                        "?${TaskDetailsConstants.address.value}={address}" +
-                        "?${TaskDetailsConstants.noOfAttempts.value}={noOfKMs}" +
-                        "?${TaskDetailsConstants.taskPrice.value}={image}"
+                .plus(
+                    "?${TaskDetailsConstants.taskCode.value}={taskCode}" +
+                            "?${TaskDetailsConstants.address.value}={address}" +
+                            "?${TaskDetailsConstants.noOfAttempts.value}={noOfKMs}" +
+                            "?${TaskDetailsConstants.taskPrice.value}={image}"
                 ),
             arguments = listOf(
                 navArgument("taskCode") {
