@@ -173,7 +173,10 @@ fun NewDashboard(navController: NavHostController) {
                             shape = CircleShape
                         )
                         .padding(3.dp)
-                        .clip(CircleShape),
+                        .clip(CircleShape)
+                        .clickable {
+                            navController.navigate(Screens.Profile.route)
+                        },
                     initial = user?.displayName?.first() ?: 'A'
                 )
             }

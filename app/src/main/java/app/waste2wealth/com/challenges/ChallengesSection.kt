@@ -3,6 +3,7 @@ package app.waste2wealth.com.challenges
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,7 +35,9 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import app.waste2wealth.com.R
+import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.profile.ProfileImage
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteBold
@@ -44,13 +47,15 @@ import com.google.firebase.ktx.Firebase
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun Community() {
+fun Community(navController: NavHostController) {
     val user by remember { mutableStateOf(Firebase.auth.currentUser) }
     val cList = listOf("Challenges", "Clubs", "Posts")
     var tabIndex by remember { mutableStateOf(0) }
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(appBackground)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(appBackground)
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -79,7 +84,10 @@ fun Community() {
                         shape = CircleShape
                     )
                     .padding(3.dp)
-                    .clip(CircleShape),
+                    .clip(CircleShape)
+                    .clickable {
+                        navController.navigate(Screens.Profile.route)
+                    },
                 initial = user?.displayName?.first() ?: 'A'
             )
         }
