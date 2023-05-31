@@ -1,12 +1,17 @@
 package app.waste2wealth.com.location
 
 import android.app.Application
+import android.content.Context
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import app.waste2wealth.com.ktorClient.Resource
+import app.waste2wealth.com.ktorClient.UriPathFinder
+import app.waste2wealth.com.ktorClient.repository.PlacesRepository
 import app.waste2wealth.com.qrcode.sensors.MeasurableSensors
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +23,9 @@ import javax.inject.Inject
 @HiltViewModel
 class LocationViewModel @Inject constructor(
     application: Application,
-    private val lightSensors: MeasurableSensors
+    private val lightSensors: MeasurableSensors,
+    private val repository: PlacesRepository,
+    private val locationTracker: LocationTracker,
 ) : AndroidViewModel(application) {
     private val locationClient = LocationClientProvider(
         application.applicationContext,
@@ -26,6 +33,9 @@ class LocationViewModel @Inject constructor(
     )
     var locationState: MutableStateFlow<String> = MutableStateFlow("Location Not Found")
     var isDark by mutableStateOf(false)
+    var latitude by mutableStateOf(0.0)
+    var longitude by mutableStateOf(0.0)
+    var listOfAddresses by mutableStateOf(mutableListOf<String?>(null))
 
     init {
         lightSensors.startListening()
@@ -39,6 +49,34 @@ class LocationViewModel @Inject constructor(
 
     val result = MutableLiveData<String>()
 
+
+    fun getPlaces() {
+        viewModelScope.launch {
+            locationTracker.getCurrentLocation()?.let {
+                repository.getPlaces("${it.latitude},${it.longitude}").let { resource ->
+                    when (resource) {
+                        is Resource.Failure -> {
+                            println("API is Failed")
+                            println("API is ${resource.exception.message}")
+                        }
+
+                        Resource.Loading -> {
+
+                        }
+
+                        is Resource.Success -> {
+                            resource.result.results?.forEach { address ->
+                                listOfAddresses.add(address.formattedAddress)
+                            }
+                            latitude = it.latitude
+                            longitude = it.longitude
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     fun updateLocation() {
         viewModelScope.launch {
             locationClient.getLocationUpdates(2000L).collectLatest { location ->
@@ -48,6 +86,11 @@ class LocationViewModel @Inject constructor(
             }
         }
     }
+
+    private fun changeUriToPath(uris: Uri, context: Context) =
+        UriPathFinder().getPath(context, uris)
+
+    fun onFilePathsListChange(list: Uri, context: Context): String? = changeUriToPath(list, context)
 
 
 }

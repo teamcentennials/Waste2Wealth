@@ -1,20 +1,33 @@
 package app.waste2wealth.com.tasksList
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
@@ -28,7 +41,6 @@ import app.waste2wealth.com.navigation.TaskDetailsConstants
 import app.waste2wealth.com.tasksDetail.TaskItem
 import app.waste2wealth.com.tasksDetail.list
 import app.waste2wealth.com.ui.theme.backGround
-import app.waste2wealth.com.ui.theme.monteNormal
 import app.waste2wealth.com.ui.theme.monteSB
 
 @Composable
@@ -57,91 +69,6 @@ fun TasksLists(
                     verticalArrangement = Arrangement.Center,
                     contentPadding = PaddingValues(bottom = 100.dp, top = 50.dp)
                 ) {
-                    tasksList.add(
-                        TaskItem(
-                            locationNumber = "Location No: 1",
-                            address = "2nd Floor, Tower A, Advant Navis Business Park," +
-                                    " Sector 142, Noida Expressway, Noida, Uttar Pradesh 201301",
-                            noOfKMs = 6,
-                            image = R.drawable.one
-                        )
-                    )
-                    tasksList.add(
-                        TaskItem(
-                            locationNumber = "Location No: 2",
-                            address = "1202, Raheja Towers, MG Road, Bengaluru, Karnataka 560001x",
-                            noOfKMs = 2,
-                            image = R.drawable.two
-                        )
-                    )
-                    tasksList.add(
-                        TaskItem(
-                            locationNumber = "Location No: 3",
-                            address = "F-202, Laxmi Nagar, Near Laxmi Park, Mumbai, Maharashtra 400075",
-                            noOfKMs = 1,
-                            image = R.drawable.three
-                        )
-                    )
-                    tasksList.add(
-                        TaskItem(
-                            locationNumber = "Location No: 4",
-                            address = "34, Dr. B.R. Ambedkar Road, Sangamwadi, Pune, Maharashtra 411001",
-                            noOfKMs = 15,
-                            image = R.drawable.four
-                        )
-                    )
-                    tasksList.add(
-                        TaskItem(
-                            locationNumber = "Location No: 5",
-                            address = "5th Floor, Atria Building, The V, Near Marol Naka " +
-                                    "Metro Station, Andheri Kurla Road, Mumbai, Maharashtra 400059",
-                            noOfKMs = 9,
-                            image = R.drawable.five
-                        )
-                    )
-                    tasksList.add(
-                        TaskItem(
-                            locationNumber = "Location No: 6",
-                            address = "House No. 36, Sector 7, Near Community Centre, Dwarka, New Delhi, Delhi 110075",
-                            noOfKMs = 7,
-                            image = R.drawable.six
-                        )
-                    )
-                    tasksList.add(
-                        TaskItem(
-                            locationNumber = "Location No: 7",
-                            address = "2nd Floor, Tower A, Advant Navis Business Park," +
-                                    " Sector 142, Noida Expressway, Noida, Uttar Pradesh 201301",
-                            noOfKMs = 15,
-                            image = R.drawable.seven
-                        )
-                    )
-                    tasksList.add(
-                        TaskItem(
-                            locationNumber = "Location No: 8",
-                            address = "S-24, 2nd Floor, Ocean Complex, Sector 18, Noida, Uttar Pradesh 201301",
-                            noOfKMs = 10,
-                            image = R.drawable.eight
-                        )
-                    )
-                    tasksList.add(
-                        TaskItem(
-                            locationNumber = "Location No: 9",
-                            address = "14/2, Wadala Shree Ram Industrial Estate, G.D. Ambekar Marg, " +
-                                    "Mumbai, Maharashtra 400031",
-                            noOfKMs = 6,
-                            image = R.drawable.nine
-                        )
-                    )
-                    tasksList.add(
-                        TaskItem(
-                            locationNumber = "Location No: 10",
-                            address = "Plot No. 5, Phase III, Udyog Vihar, " +
-                                    "Sector 20, Gurugram, Haryana 122016",
-                            noOfKMs = 9,
-                            image = R.drawable.ten
-                        )
-                    )
                     itemsIndexed(tasksList) { index, taskItem ->
                         Card(
                             elevation = 3.dp,

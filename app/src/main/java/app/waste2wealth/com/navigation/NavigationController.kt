@@ -22,6 +22,7 @@ import app.waste2wealth.com.login.onboarding.Onboarding
 import app.waste2wealth.com.login.onboarding.SettingUp
 import app.waste2wealth.com.profile.NewProfileScreen
 import app.waste2wealth.com.qrcode.ui.ScanQr
+import app.waste2wealth.com.reportwaste.ReportWaste
 import app.waste2wealth.com.successtask.DeliveryDetailsScreen
 import app.waste2wealth.com.tasksDetail.TasksDetails
 import app.waste2wealth.com.tasksList.TasksLists
@@ -102,7 +103,7 @@ fun NavigationController(
         }
         composable(Screens.Profile.route) {
 //            ProfileScreen(navHostController = navController)
-            NewProfileScreen()
+            NewProfileScreen(navController = navController)
         }
         composable(Screens.Onboarding.route) {
             Onboarding(navHostController = navController)
@@ -119,6 +120,9 @@ fun NavigationController(
         }
         composable(Screens.Community.route) {
             Community(navController = navController)
+        }
+        composable(Screens.ReportWaste.route) {
+            ReportWaste(navController = navController)
         }
         composable(
             Screens.TaskDetail.route

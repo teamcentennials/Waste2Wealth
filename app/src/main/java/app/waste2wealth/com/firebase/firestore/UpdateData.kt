@@ -13,13 +13,13 @@ fun updateInfoToFirebase(
     organization: String?,
     address: String?,
 ) {
-    val courses = ProfileInfo(
+    val profile = ProfileInfo(
         name, email, phoneNumber, gender, organization, address
     )
 
     val db = FirebaseFirestore.getInstance()
     email?.let {
-        db.collection("ProfileInfo").document(it).set(courses)
+        db.collection("ProfileInfo").document(it).set(profile)
             .addOnSuccessListener {
 
                 Toast.makeText(context, "Profile Updated successfully..", Toast.LENGTH_SHORT).show()
@@ -33,5 +33,38 @@ fun updateInfoToFirebase(
                     .show()
             }
     }
+
+}
+
+fun updateWasteToFirebase(
+    context: Context,
+    latitude: Double,
+    longitude: Double,
+    imagePath: String,
+    timeStamp: Long,
+    userEmail: String,
+    address: String,
+) {
+    val wasteItem = WasteItem(
+        latitude, longitude, imagePath, timeStamp, userEmail, address
+    )
+
+    val db = FirebaseFirestore.getInstance()
+    timeStamp.let {
+        db.collection("AllWastes").document(it.toString()).set(wasteItem)
+            .addOnSuccessListener {
+
+                Toast.makeText(context, "Waste Reported Successfully", Toast.LENGTH_SHORT).show()
+
+            }.addOnFailureListener { exception ->
+                Toast.makeText(
+                    context,
+                    "Fail to Report Waste " + exception.message,
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
+    }
+
 
 }

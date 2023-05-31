@@ -7,11 +7,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelProvider
-import app.waste2wealth.com.bottombar.BottomBar
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.login.onboarding.SmsBroadcastReceiver
 import app.waste2wealth.com.login.onboarding.SmsBroadcastReceiver.SmsBroadcastReceiverListener
@@ -38,17 +36,15 @@ class MainActivity : ComponentActivity() {
                 systemUiController.setSystemBarsColor(appBackground)
                 val navController = rememberAnimatedNavController()
                 viewModel = ViewModelProvider(this)[LocationViewModel::class.java]
-                Scaffold(bottomBar = {
-                    BottomBar(navController = navController)
-                }) {
-                    val locationViewModel: LocationViewModel = hiltViewModel()
-                    println(it)
-                    val scaffoldState = rememberScaffoldState()
-                    val client = SmsRetriever.getClient(this)
-                    client.startSmsUserConsent(null)
-                    NavigationController(scaffoldState, locationViewModel, navController)
+
+                val locationViewModel: LocationViewModel = hiltViewModel()
+                val scaffoldState = rememberScaffoldState()
+                val client = SmsRetriever.getClient(this)
+                client.startSmsUserConsent(null)
+//                SettingUp(navHostController = navController)
+                NavigationController(scaffoldState, locationViewModel, navController)
 //                    CompleteProfile()
-                }
+
             }
         }
     }

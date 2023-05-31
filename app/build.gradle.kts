@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     id("dagger.hilt.android.plugin")
     kotlin("kapt")
+    id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.gms.google-services")
 }
 
@@ -115,10 +116,24 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.jet.firestore)
     implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.storage)
 
     //Stacked Cards
     implementation(libs.stacked.cards)
 
+    //Ktor-Client
+    implementation("io.ktor:ktor-client-core:1.6.3")
+    implementation("io.ktor:ktor-client-cio:1.6.3")
+    implementation("io.ktor:ktor-client-serialization:1.6.3")
+    implementation("io.ktor:ktor-client-websockets:1.6.3")
+    implementation("io.ktor:ktor-client-logging:1.6.3")
+    implementation("ch.qos.logback:logback-classic:1.2.11")
+    implementation("io.ktor:ktor-client-android:1.6.3")
+    implementation("io.ktor:ktor-client-serialization:1.6.3")
+    implementation("io.ktor:ktor-client-logging-jvm:1.6.3")
+//    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
+    implementation("io.ktor:ktor-client-gson:1.6.3")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
     implementation(libs.camera.core)
     implementation(libs.camera.camera2)
