@@ -113,3 +113,78 @@ fun updateCollectedWasteToFirebase(
 
 }
 
+fun updateTemporaryActivityToFirebase(
+    context: Context,
+    startTime: Long,
+    endTime: Long = 0L,
+    beforeTaskPath: String,
+    title: String,
+    email: String
+) {
+    val temporaryActivityItem = TemporaryActivityItem(
+        startTime = startTime,
+        endTime = endTime,
+        title = title,
+        beforeTaskPath = beforeTaskPath,
+        email = email
+    )
+
+    val db = FirebaseFirestore.getInstance()
+    startTime.let {
+        db.collection("TemporaryActivities").document(it.toString()).set(temporaryActivityItem)
+            .addOnSuccessListener {
+
+                Toast.makeText(context, "Recording Started Succesfully", Toast.LENGTH_SHORT).show()
+
+            }.addOnFailureListener { exception ->
+                Toast.makeText(
+                    context,
+                    "Something Went Wrong" + exception.message,
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
+    }
+
+
+}
+
+fun updateActivityToFirebase(
+    context: Context,
+    startTime: Long,
+    endTime: Long = 0L,
+    beforeTaskPath: String,
+    endTaskPath: String,
+    duration: String,
+    title: String,
+    email: String
+) {
+    val allActivityItem = AllActivityItem(
+        startTime = startTime,
+        endTime = endTime,
+        title = title,
+        beforeTaskPath = beforeTaskPath,
+        endTaskPath = endTaskPath,
+        email = email,
+        duration = duration
+    )
+    val db = FirebaseFirestore.getInstance()
+    startTime.let { time ->
+        db.collection("AllActivities").document(time.toString()).set(allActivityItem)
+            .addOnSuccessListener {
+                db.collection("TemporaryActivities").document(time.toString()).delete()
+
+                Toast.makeText(context, "Activity Updated Succesfully", Toast.LENGTH_SHORT).show()
+
+            }.addOnFailureListener { exception ->
+                Toast.makeText(
+                    context,
+                    "Something Went Wrong" + exception.message,
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
+    }
+
+
+}

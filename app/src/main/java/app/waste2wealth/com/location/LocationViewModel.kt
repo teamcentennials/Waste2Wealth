@@ -42,6 +42,9 @@ class LocationViewModel @Inject constructor(
     var distance = mutableStateOf("")
     var time = mutableStateOf("")
     var wastePhoto = mutableStateOf("")
+    var beforeActivityPath = mutableStateOf("")
+    var activityTitle = mutableStateOf("")
+    var startActivityTime = mutableStateOf(0L)
     var listOfAddresses by mutableStateOf(mutableListOf<String?>(null))
 
 

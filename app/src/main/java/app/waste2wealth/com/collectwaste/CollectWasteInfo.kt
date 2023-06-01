@@ -246,7 +246,7 @@ fun CollectWasteInfo(
     }
 }
 
-private suspend fun getDownloadUrlFromPath(path: String): String {
+suspend fun getDownloadUrlFromPath(path: String): String {
     val storageRef = FirebaseStorage.getInstance().reference
     val fileRef = storageRef.child(path)
     return fileRef.downloadUrl.await().toString()

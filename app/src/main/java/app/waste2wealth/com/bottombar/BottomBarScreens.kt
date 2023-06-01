@@ -7,7 +7,7 @@ sealed class BottomBarScreens(val route: String?, val title: String?, val icon: 
     object HomeScreen : BottomBarScreens(Screens.Dashboard.route, "Home", R.drawable.homei)
     object RewardsScreen : BottomBarScreens(Screens.Splash.route, "Rewards", R.drawable.rewardsi)
     object RecordScreen :
-        BottomBarScreens(Screens.QrCodeScanner.route, "Record", R.drawable.recordsi)
+        BottomBarScreens(Screens.AllActivities.route, "Activity", R.drawable.recordsi)
 
     object CommunityScreen :
         BottomBarScreens(Screens.Community.route, "Community", R.drawable.commi)

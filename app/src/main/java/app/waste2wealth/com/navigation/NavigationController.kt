@@ -13,9 +13,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import app.waste2wealth.com.activity.AllActivities
+import app.waste2wealth.com.activity.MyRecordings
+import app.waste2wealth.com.activity.StopRecording
 import app.waste2wealth.com.challenges.Community
 import app.waste2wealth.com.collectwaste.CollectWaste
 import app.waste2wealth.com.collectwaste.CollectWasteInfo
+import app.waste2wealth.com.collectwaste.SuccessfullyCollected
 import app.waste2wealth.com.dashboard.NewDashboard
 import app.waste2wealth.com.failuretask.TaskUndelivered
 import app.waste2wealth.com.location.LocationViewModel
@@ -27,7 +31,6 @@ import app.waste2wealth.com.profile.NewProfileScreen
 import app.waste2wealth.com.qrcode.ui.ScanQr
 import app.waste2wealth.com.reportwaste.ReportWaste
 import app.waste2wealth.com.successtask.DeliveryDetailsScreen
-import app.waste2wealth.com.successtask.SuccessfullyCollected
 import app.waste2wealth.com.tasksDetail.TasksDetails
 import app.waste2wealth.com.tasksList.TasksLists
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -137,6 +140,15 @@ fun NavigationController(
         }
         composable(Screens.CollectedWasteSuccess.route) {
             SuccessfullyCollected(navController = navController, viewModel = viewModel)
+        }
+        composable(Screens.AllActivities.route) {
+            AllActivities(navController = navController, viewModel = viewModel)
+        }
+        composable(Screens.MyRecordings.route) {
+            MyRecordings(navController = navController, viewModel = viewModel)
+        }
+        composable(Screens.StopRecording.route) {
+            StopRecording(navController = navController, viewModel = viewModel)
         }
         composable(
             Screens.TaskDetail.route

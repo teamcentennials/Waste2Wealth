@@ -1,4 +1,4 @@
-package app.waste2wealth.com.successtask
+package app.waste2wealth.com.collectwaste
 
 import android.Manifest
 import android.graphics.Bitmap
