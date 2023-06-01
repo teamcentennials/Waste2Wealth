@@ -67,7 +67,8 @@ import com.google.firebase.ktx.Firebase
 
 @Composable
 fun CompleteProfile(navHostController: NavHostController) {
-    val user by remember { mutableStateOf(Firebase.auth.currentUser) }
+    var user by remember { mutableStateOf(Firebase.auth.currentUser) }
+    println("Current user is ${user?.displayName}")
     var email by remember {
         mutableStateOf(TextFieldValue(user?.email ?: ""))
     }
@@ -323,7 +324,7 @@ fun CompleteProfile(navHostController: NavHostController) {
                                     organization = organization.text,
                                     address = address.text,
                                 )
-                                navHostController.navigate(Screens.SettingUp.route)
+                                navHostController.navigate(Screens.Dashboard.route)
                             } else {
                                 Toast.makeText(
                                     context,
