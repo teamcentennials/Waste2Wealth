@@ -121,7 +121,6 @@ fun Community(navController: NavHostController) {
                             .clickable {
                                 navController.navigate(Screens.Profile.route)
                             },
-                        initial = user?.displayName?.first() ?: 'A'
                     )
                 }
 

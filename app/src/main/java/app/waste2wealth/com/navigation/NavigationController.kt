@@ -30,6 +30,7 @@ import app.waste2wealth.com.login.onboarding.SettingUp
 import app.waste2wealth.com.profile.NewProfileScreen
 import app.waste2wealth.com.qrcode.ui.ScanQr
 import app.waste2wealth.com.reportwaste.ReportWaste
+import app.waste2wealth.com.rewards.RewardsScreen
 import app.waste2wealth.com.successtask.DeliveryDetailsScreen
 import app.waste2wealth.com.tasksDetail.TasksDetails
 import app.waste2wealth.com.tasksList.TasksLists
@@ -149,6 +150,9 @@ fun NavigationController(
         }
         composable(Screens.StopRecording.route) {
             StopRecording(navController = navController, viewModel = viewModel)
+        }
+        composable(Screens.Rewards.route) {
+            RewardsScreen(navController = navController)
         }
         composable(
             Screens.TaskDetail.route

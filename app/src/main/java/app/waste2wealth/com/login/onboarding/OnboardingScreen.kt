@@ -211,7 +211,7 @@ fun Bgresource(
                                     )
                                     Text(
                                         text = item[page].description,
-                                        color = Color.Gray,
+                                        color = textColor,
                                         modifier = Modifier.padding(vertical = 50.dp)
                                     )
                                 }
@@ -319,7 +319,7 @@ fun Bgresource(
                                         )
                                         Text(
                                             "Continue with Google",
-                                            color = Color.Black,
+                                            color = textColor,
                                             fontFamily = monteSB,
                                             fontSize = 19.sp,
                                             modifier = Modifier.padding(end = 7.dp)
