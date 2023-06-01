@@ -8,5 +8,12 @@ data class ProfileInfo(
     val organization: String?,
     val address: String?,
 ) {
-    constructor() : this("", "", "", "", "", "")
+    constructor() : this(
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+    )
 }

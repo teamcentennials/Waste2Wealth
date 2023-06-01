@@ -38,7 +38,7 @@ fun SplashScreen(navController: NavController) {
                 })
         )
         delay(1000L)
-        navController.popBackStack()
+        println("User is $user")
         navController.navigate(if (user != null) Screens.Dashboard.route else Screens.Onboarding.route)
     }
     Box(

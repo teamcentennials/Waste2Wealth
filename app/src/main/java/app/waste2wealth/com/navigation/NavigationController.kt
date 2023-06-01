@@ -9,10 +9,13 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import app.waste2wealth.com.challenges.Community
+import app.waste2wealth.com.collectwaste.CollectWaste
+import app.waste2wealth.com.collectwaste.CollectWasteInfo
 import app.waste2wealth.com.dashboard.NewDashboard
 import app.waste2wealth.com.failuretask.TaskUndelivered
 import app.waste2wealth.com.location.LocationViewModel
@@ -24,6 +27,7 @@ import app.waste2wealth.com.profile.NewProfileScreen
 import app.waste2wealth.com.qrcode.ui.ScanQr
 import app.waste2wealth.com.reportwaste.ReportWaste
 import app.waste2wealth.com.successtask.DeliveryDetailsScreen
+import app.waste2wealth.com.successtask.SuccessfullyCollected
 import app.waste2wealth.com.tasksDetail.TasksDetails
 import app.waste2wealth.com.tasksList.TasksLists
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -36,6 +40,7 @@ fun NavigationController(
     locationViewModel: LocationViewModel,
     navController: NavHostController
 ) {
+    val viewModel: LocationViewModel = hiltViewModel()
     AnimatedNavHost(navController = navController, startDestination = Screens.Splash.route) {
         composable(
             route = Screens.LoginScreen.route,
@@ -122,7 +127,16 @@ fun NavigationController(
             Community(navController = navController)
         }
         composable(Screens.ReportWaste.route) {
-            ReportWaste(navController = navController)
+            ReportWaste(navController = navController, viewModel = viewModel)
+        }
+        composable(Screens.CollectWasteLists.route) {
+            CollectWaste(navController = navController, viewModel = viewModel)
+        }
+        composable(Screens.CollectWasteInfo.route) {
+            CollectWasteInfo(navController = navController, viewModel = viewModel)
+        }
+        composable(Screens.CollectedWasteSuccess.route) {
+            SuccessfullyCollected(navController = navController, viewModel = viewModel)
         }
         composable(
             Screens.TaskDetail.route

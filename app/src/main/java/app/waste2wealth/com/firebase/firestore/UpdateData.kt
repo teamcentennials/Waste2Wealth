@@ -68,3 +68,48 @@ fun updateWasteToFirebase(
 
 
 }
+
+fun updateCollectedWasteToFirebase(
+    context: Context,
+    latitude: Double,
+    longitude: Double,
+    imagePath: String,
+    timeStamp: Long,
+    userEmail: String,
+    address: String,
+    isWasteCollected: Boolean,
+    allWasteCollected: Boolean,
+    feedBack: String,
+) {
+    val wasteItem = CollectedWasteItem(
+        latitude,
+        longitude,
+        imagePath,
+        timeStamp,
+        userEmail,
+        address,
+        isWasteCollected,
+        allWasteCollected,
+        feedBack
+    )
+
+    val db = FirebaseFirestore.getInstance()
+    timeStamp.let {
+        db.collection("CollectedWastes").document(it.toString()).set(wasteItem)
+            .addOnSuccessListener {
+
+                Toast.makeText(context, "Waste Reported Successfully", Toast.LENGTH_SHORT).show()
+
+            }.addOnFailureListener { exception ->
+                Toast.makeText(
+                    context,
+                    "Fail to Report Waste " + exception.message,
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
+    }
+
+
+}
+

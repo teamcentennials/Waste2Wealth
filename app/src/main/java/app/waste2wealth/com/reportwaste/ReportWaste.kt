@@ -2,6 +2,7 @@ package app.waste2wealth.com.reportwaste
 
 import android.Manifest
 import android.graphics.Bitmap
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
@@ -54,6 +55,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -64,7 +66,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.app.ActivityOptionsCompat
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import app.waste2wealth.com.R
 import app.waste2wealth.com.bottombar.BottomBar
@@ -98,7 +99,7 @@ import java.io.ByteArrayOutputStream
 @Composable
 fun ReportWaste(
     navController: NavHostController,
-    viewModel: LocationViewModel = hiltViewModel()
+    viewModel: LocationViewModel
 ) {
     val permissionState = rememberMultiplePermissionsState(
         permissions = listOf(
@@ -260,8 +261,6 @@ fun ReportWaste(
                                 .fillMaxWidth()
                                 .padding(start = 10.dp, top = 30.dp)
                                 .clickable {
-                                    val storage = FirebaseStorage.getInstance()
-                                    val storageRef = storage.reference
                                 }
                         ) {
                             Text(
@@ -375,13 +374,14 @@ fun ReportWaste(
                         DialogBox(
                             isVisible = isDialogVisible,
                             successRequest = {
+                                Toast.makeText(context, "Please Wait", Toast.LENGTH_SHORT).show()
                                 if (bitmap != null) {
                                     val storageRef = FirebaseStorage.getInstance().reference
                                     val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
                                     var imageName = (1..10)
                                         .map { allowedChars.random() }
                                         .joinToString("")
-                                    imageName = "${user?.email}/${imageName}.jpg"
+                                    imageName = "Reported/${user?.email}/${imageName}.jpg"
 
                                     val imageRef =
                                         storageRef.child(imageName) // Set desired storage location
@@ -432,7 +432,7 @@ fun ReportWaste(
                         )
                         LottieAnimation(
                             composition = currenanim,
-                            iterations = Int.MAX_VALUE,
+                            iterations = 1,
                             contentScale = ContentScale.Crop,
                             speed = 1f,
                             modifier = Modifier
@@ -459,7 +459,15 @@ fun ReportWaste(
 }
 
 @Composable
-fun DialogBox(isVisible: Boolean, successRequest: () -> Unit, dismissRequest: () -> Unit) {
+fun DialogBox(
+    isVisible: Boolean,
+    icon: ImageVector = Icons.Filled.QuestionMark,
+    title: String = "Are you sure you want to report this waste?",
+    description: String = "Reporting a wrong location will result in a penalty of 100 points " +
+            "and may also lead to a permanent ban from the app",
+    successRequest: () -> Unit,
+    dismissRequest: () -> Unit
+) {
     if (isVisible) {
 
         Dialog(onDismissRequest = dismissRequest) {
@@ -474,7 +482,7 @@ fun DialogBox(isVisible: Boolean, successRequest: () -> Unit, dismissRequest: ()
                 ) {
 
                     Image(
-                        Icons.Filled.QuestionMark,
+                        icon,
                         contentDescription = null, // decorative
                         contentScale = ContentScale.Fit,
                         colorFilter = ColorFilter.tint(
@@ -489,7 +497,7 @@ fun DialogBox(isVisible: Boolean, successRequest: () -> Unit, dismissRequest: ()
 
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            text = "Are you Sure that this is the location of the waste ?",
+                            text = title,
                             textAlign = TextAlign.Center,
                             color = textColor,
                             fontFamily = monteSB,
@@ -501,8 +509,7 @@ fun DialogBox(isVisible: Boolean, successRequest: () -> Unit, dismissRequest: ()
                             overflow = TextOverflow.Ellipsis
                         )
                         Text(
-                            text = "Reporting a wrong location will result in a penalty of 100 points" +
-                                    " and may also lead to a permanent ban from the app",
+                            text = description,
                             textAlign = TextAlign.Center,
                             fontFamily = monteNormal,
                             fontSize = 13.sp,

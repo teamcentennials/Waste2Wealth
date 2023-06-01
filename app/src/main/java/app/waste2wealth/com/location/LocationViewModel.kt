@@ -34,8 +34,16 @@ class LocationViewModel @Inject constructor(
     var locationState: MutableStateFlow<String> = MutableStateFlow("Location Not Found")
     var isDark by mutableStateOf(false)
     var latitude by mutableStateOf(0.0)
+    var theirLatitude = mutableStateOf(0.0)
     var longitude by mutableStateOf(0.0)
+    var theirLongitude = mutableStateOf(0.0)
+    var locationNo = mutableStateOf("")
+    var address = mutableStateOf("")
+    var distance = mutableStateOf("")
+    var time = mutableStateOf("")
+    var wastePhoto = mutableStateOf("")
     var listOfAddresses by mutableStateOf(mutableListOf<String?>(null))
+
 
     init {
         lightSensors.startListening()

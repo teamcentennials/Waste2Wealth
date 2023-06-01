@@ -3,26 +3,38 @@ package app.waste2wealth.com.tasksDetail
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Warning
-import androidx.compose.runtime.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Card
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import app.waste2wealth.com.R
 import app.waste2wealth.com.components.TasksDetailsAppBar
@@ -33,7 +45,6 @@ import app.waste2wealth.com.tasksList.customShadow
 import app.waste2wealth.com.ui.theme.backGround
 import app.waste2wealth.com.ui.theme.monteNormal
 import app.waste2wealth.com.ui.theme.monteSB
-import kotlinx.coroutines.launch
 
 @Composable
 fun TasksDetails(
@@ -248,106 +259,7 @@ fun TasksDetails(
             }
 
 
-            DialogBox(isVisible = isDialogVisible, successRequest = {
-                coroutineScope.launch {
-                    scaffoldState.snackbarHostState.showSnackbar(
-                        message = "Successfully Checked In",
-                        actionLabel = "Close",
-                        duration = SnackbarDuration.Long
-                    )
-                }
-                isSuccessVisible = true
-                isDialogVisible = false
-            }) {
-                isDialogVisible = !isDialogVisible
-            }
         }
     }
 }
 
-
-@Composable
-fun DialogBox(isVisible: Boolean, successRequest: () -> Unit, dismissRequest: () -> Unit) {
-    if (isVisible) {
-
-        Dialog(onDismissRequest = dismissRequest) {
-            Card(
-                shape = RoundedCornerShape(10.dp),
-                modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp),
-                elevation = 8.dp
-            ) {
-                Column(
-                    Modifier
-                        .background(Color.White)
-                ) {
-
-                    Image(
-                        Icons.Filled.Warning,
-                        contentDescription = null, // decorative
-                        contentScale = ContentScale.Fit,
-                        colorFilter = ColorFilter.tint(
-                            color = Color.Red.copy(0.6f)
-                        ),
-                        modifier = Modifier
-                            .padding(top = 35.dp)
-                            .height(70.dp)
-                            .fillMaxWidth(),
-
-                        )
-
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
-                            text = "Incorrect Location",
-                            textAlign = TextAlign.Center,
-                            color = Color.Black,
-                            fontFamily = monteSB,
-                            fontSize = 15.sp,
-                            modifier = Modifier
-                                .padding(top = 0.dp)
-                                .fillMaxWidth(),
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Text(
-                            text = "The Location of Waste and your location are not matching. " +
-                                    "Do you still want to continue check in ?",
-                            textAlign = TextAlign.Center,
-                            fontFamily = monteNormal,
-                            fontSize = 13.sp,
-                            modifier = Modifier
-                                .padding(top = 7.dp, start = 25.dp, end = 13.dp)
-                                .fillMaxWidth(),
-                            color = Color.Black
-                        )
-                    }
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(top = 10.dp)
-                            .background(backGround),
-                        horizontalArrangement = Arrangement.SpaceAround
-                    ) {
-
-                        TextButton(onClick = dismissRequest) {
-                            Text(
-                                "NO",
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White,
-                                modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
-                            )
-                        }
-                        TextButton(onClick = successRequest) {
-                            Text(
-                                "YES",
-                                fontWeight = FontWeight.ExtraBold,
-                                color = Color.White,
-                                modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
-                            )
-                        }
-                    }
-                }
-            }
-        }
-
-    }
-}

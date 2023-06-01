@@ -149,6 +149,7 @@ fun NewDashboard(navController: NavHostController, viewModel: LocationViewModel 
                         11 -> month = "November"
                         12 -> month = "December"
                     }
+                    println("My User is ${user?.displayName}")
                     Column {
                         Text(
                             text = "Hi, ${user?.displayName}",
@@ -186,7 +187,6 @@ fun NewDashboard(navController: NavHostController, viewModel: LocationViewModel 
                             .clickable {
                                 navController.navigate(Screens.Profile.route)
                             },
-                        initial = user?.displayName?.first() ?: 'A'
                     )
                 }
                 Divider(
@@ -325,7 +325,10 @@ fun NewDashboard(navController: NavHostController, viewModel: LocationViewModel 
                     Card(
                         backgroundColor = Color(0xFF6FCF97),
                         shape = RoundedCornerShape(10.dp),
-                        border = BorderStroke(1.dp, textColor)
+                        border = BorderStroke(1.dp, textColor),
+                        modifier = Modifier.clickable {
+                            navController.navigate(Screens.CollectWasteLists.route)
+                        }
                     ) {
                         Column(
                             verticalArrangement = Arrangement.Center,
