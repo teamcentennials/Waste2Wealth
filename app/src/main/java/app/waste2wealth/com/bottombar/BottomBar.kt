@@ -18,8 +18,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
+import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.textColor
 
@@ -73,7 +73,7 @@ fun BottomBar(navController: NavController) {
                     onClick = {
                         it.route?.let { it1 ->
                             navController.navigate(it1) {
-                                popUpTo(navController.graph.findStartDestination().id) {
+                                popUpTo(Screens.Dashboard.route) {
                                     saveState = true
                                 }
                                 launchSingleTop = true
