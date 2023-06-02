@@ -129,6 +129,8 @@ fun AllActivities(
 
         }
     )
+
+
     PermissionDrawer(
         drawerState = permissionDrawerState,
         permissionState = permissionState,
@@ -407,6 +409,7 @@ fun AllActivities(
         }
     }
 }
+
 
 @Composable
 fun RepeatingActivity(

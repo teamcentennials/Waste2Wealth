@@ -12,9 +12,24 @@ fun updateInfoToFirebase(
     gender: String?,
     organization: String?,
     address: String?,
+    pointsEarned: Int,
+    pointsRedeemed: Int,
+    noOfTimesReported: Int = 0,
+    noOfTimesCollected: Int = 0,
+    noOfTimesActivity: Int = 0,
 ) {
     val profile = ProfileInfo(
-        name, email, phoneNumber, gender, organization, address
+        name,
+        email,
+        phoneNumber,
+        gender,
+        organization,
+        address,
+        pointsEarned,
+        pointsRedeemed,
+        noOfTimesReported,
+        noOfTimesCollected,
+        noOfTimesActivity
     )
 
     val db = FirebaseFirestore.getInstance()

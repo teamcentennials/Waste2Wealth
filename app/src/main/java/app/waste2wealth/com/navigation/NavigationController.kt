@@ -187,7 +187,12 @@ fun NavigationController(
             MyRecordings(navController = navController, viewModel = viewModel)
         }
         composable(Screens.StopRecording.route) {
-            StopRecording(navController = navController, viewModel = viewModel)
+            StopRecording(
+                navController = navController,
+                viewModel = viewModel,
+                email = email.value,
+                name = name.value
+            )
         }
         composable(Screens.Rewards.route) {
             RewardsScreen(

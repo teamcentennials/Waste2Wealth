@@ -52,6 +52,7 @@ import androidx.navigation.NavHostController
 import app.waste2wealth.com.R
 import app.waste2wealth.com.bottombar.BottomBar
 import app.waste2wealth.com.components.permissions.PermissionDrawer
+import app.waste2wealth.com.firebase.firestore.ProfileInfo
 import app.waste2wealth.com.firebase.firestore.challengesList
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.navigation.Screens
@@ -63,6 +64,8 @@ import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.jet.firestore.JetFirestore
+import com.jet.firestore.getListOfObjects
 import java.util.Calendar
 import java.util.TimeZone
 import kotlin.system.exitProcess
@@ -89,356 +92,395 @@ fun NewDashboard(
     val permissionDrawerState = rememberBottomDrawerState(
         if (permissionState.allPermissionsGranted) BottomDrawerValue.Closed else BottomDrawerValue.Open
     )
+    var profileList by remember {
+        mutableStateOf<List<ProfileInfo>?>(null)
+    }
+    var address by remember {
+        mutableStateOf("")
+    }
+    var phoneNumber by remember {
+        mutableStateOf("")
+    }
+    var gender by remember {
+        mutableStateOf("")
+    }
+    var organization by remember {
+        mutableStateOf("")
+    }
+    var pointsEarned by remember {
+        mutableStateOf("")
+    }
+    var pointsRedeemed by remember {
+        mutableStateOf("")
+    }
     val activity = (LocalContext.current as? Activity)
     BackHandler {
         activity?.finishAndRemoveTask()
         exitProcess(0)
     }
-    PermissionDrawer(
-        drawerState = permissionDrawerState,
-        permissionState = permissionState,
-        rationaleText = "To continue, allow Report Waste2Wealth to access your device's location" +
-                ". Tap Settings > Permission, and turn \"Access Location On\" on.",
-        withoutRationaleText = "Location permission required for functionality of this app." +
-                " Please grant the permission.",
-    ) {
-        Scaffold(bottomBar = {
-            BottomBar(navController = navController)
-        }) {
-            println(it)
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(appBackground)
-            ) {
-                Row(
+    JetFirestore(path = {
+        collection("ProfileInfo")
+    }, onRealtimeCollectionFetch = { value, _ ->
+        profileList = value?.getListOfObjects()
+    }) {
+        if (profileList != null) {
+            for (i in profileList!!) {
+                if (i.email == email) {
+                    address = i.address ?: ""
+                    gender = i.gender ?: ""
+                    phoneNumber = i.phoneNumber ?: ""
+                    organization = i.organization ?: ""
+                    pointsEarned = i.pointsEarned.toString()
+                    pointsRedeemed = i.pointsRedeemed.toString()
+                }
+            }
+        }
+        PermissionDrawer(
+            drawerState = permissionDrawerState,
+            permissionState = permissionState,
+            rationaleText = "To continue, allow Report Waste2Wealth to access your device's location" +
+                    ". Tap Settings > Permission, and turn \"Access Location On\" on.",
+            withoutRationaleText = "Location permission required for functionality of this app." +
+                    " Please grant the permission.",
+        ) {
+            Scaffold(bottomBar = {
+                BottomBar(navController = navController)
+            }) {
+                println(it)
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            top = 25.dp,
-                            bottom = 15.dp,
-                            end = 25.dp,
-                            start = 15.dp
-                        ),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                        .fillMaxSize()
+                        .background(appBackground)
                 ) {
-                    val calendar = Calendar.getInstance(TimeZone.getDefault())
-
-                    val currentDate = calendar.get(Calendar.DATE)
-                    val currentMonth = calendar.get(Calendar.MONTH) + 1
-                    val currentDay = calendar.get(Calendar.DAY_OF_WEEK)
-                    var currDay by remember {
-                        mutableStateOf("")
-                    }
-                    var month by remember {
-                        mutableStateOf("")
-                    }
-                    when (currentDay) {
-                        1 -> currDay = "Sunday"
-                        2 -> currDay = "Monday"
-                        3 -> currDay = "Tuesday"
-                        4 -> currDay = "Wednesday"
-                        5 -> currDay = "Thursday"
-                        6 -> currDay = "Friday"
-                        7 -> currDay = "Saturday"
-                    }
-                    when (currentMonth) {
-                        1 -> month = "January"
-                        2 -> month = "February"
-                        3 -> month = "March"
-                        4 -> month = "April"
-                        5 -> month = "May"
-                        6 -> month = "June"
-                        7 -> month = "July"
-                        8 -> month = "August"
-                        9 -> month = "September"
-                        10 -> month = "October"
-                        11 -> month = "November"
-                        12 -> month = "December"
-                    }
-                    Column {
-                        Text(
-                            text = "Hi, $name",
-                            color = textColor,
-                            fontSize = 20.sp,
-                            fontFamily = monteSB,
-                            modifier = Modifier.padding(bottom = 7.dp)
-                        )
-                        Text(
-                            text = "$currDay, $currentDate $month",
-                            color = textColor,
-                            fontSize = 13.sp,
-                            fontFamily = monteSB,
-                            modifier = Modifier.padding(bottom = 7.dp)
-                        )
-                        Text(
-                            text = "Welcome back to your Dashboard",
-                            color = textColor,
-                            fontSize = 13.sp,
-                            fontFamily = monteSB,
-                            modifier = Modifier.padding(bottom = 7.dp)
-                        )
-                    }
-                    ProfileImage(
-                        imageUrl = pfp,
+                    Row(
                         modifier = Modifier
-                            .size(60.dp)
-                            .border(
-                                width = 1.dp,
-                                color = appBackground,
-                                shape = CircleShape
+                            .fillMaxWidth()
+                            .padding(
+                                top = 25.dp,
+                                bottom = 15.dp,
+                                end = 25.dp,
+                                start = 15.dp
+                            ),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        val calendar = Calendar.getInstance(TimeZone.getDefault())
+
+                        val currentDate = calendar.get(Calendar.DATE)
+                        val currentMonth = calendar.get(Calendar.MONTH) + 1
+                        val currentDay = calendar.get(Calendar.DAY_OF_WEEK)
+                        var currDay by remember {
+                            mutableStateOf("")
+                        }
+                        var month by remember {
+                            mutableStateOf("")
+                        }
+                        when (currentDay) {
+                            1 -> currDay = "Sunday"
+                            2 -> currDay = "Monday"
+                            3 -> currDay = "Tuesday"
+                            4 -> currDay = "Wednesday"
+                            5 -> currDay = "Thursday"
+                            6 -> currDay = "Friday"
+                            7 -> currDay = "Saturday"
+                        }
+                        when (currentMonth) {
+                            1 -> month = "January"
+                            2 -> month = "February"
+                            3 -> month = "March"
+                            4 -> month = "April"
+                            5 -> month = "May"
+                            6 -> month = "June"
+                            7 -> month = "July"
+                            8 -> month = "August"
+                            9 -> month = "September"
+                            10 -> month = "October"
+                            11 -> month = "November"
+                            12 -> month = "December"
+                        }
+                        Column {
+                            Text(
+                                text = "Hi, $name",
+                                color = textColor,
+                                fontSize = 20.sp,
+                                fontFamily = monteSB,
+                                modifier = Modifier.padding(bottom = 7.dp)
                             )
-                            .padding(3.dp)
-                            .clip(CircleShape)
-                            .clickable {
-                                navController.navigate(Screens.Profile.route)
-                            },
-                    )
-                }
-                Divider(
-                    color = textColor.copy(0.35f),
-                    thickness = 1.dp,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 15.dp)
-                )
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 15.dp),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Points Earned      ",
-                        color = textColor,
-                        fontSize = 16.sp,
-                        fontFamily = monteBold,
-                        modifier = Modifier.padding(start = 45.dp, end = 60.dp)
-                    )
-                    Row(modifier = Modifier.padding(end = 25.dp)) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.coins),
-                            contentDescription = "coins",
+                            Text(
+                                text = "$currDay, $currentDate $month",
+                                color = textColor,
+                                fontSize = 13.sp,
+                                fontFamily = monteSB,
+                                modifier = Modifier.padding(bottom = 7.dp)
+                            )
+                            Text(
+                                text = "Welcome back to your Dashboard",
+                                color = textColor,
+                                fontSize = 13.sp,
+                                fontFamily = monteSB,
+                                modifier = Modifier.padding(bottom = 7.dp)
+                            )
+                        }
+                        ProfileImage(
+                            imageUrl = pfp,
                             modifier = Modifier
-                                .size(20.dp)
-                                .padding(end = 5.dp),
-                            tint = Color.Unspecified
-                        )
-                        Text(
-                            text = "8999999",
-                            color = textColor,
-                            fontSize = 15.sp,
-                            fontFamily = monteNormal,
+                                .size(60.dp)
+                                .border(
+                                    width = 1.dp,
+                                    color = appBackground,
+                                    shape = CircleShape
+                                )
+                                .padding(3.dp)
+                                .clip(CircleShape)
+                                .clickable {
+                                    navController.navigate(Screens.Profile.route)
+                                },
                         )
                     }
-
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 15.dp, bottom = 15.dp),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Points Redeemed",
-                        color = textColor,
-                        fontSize = 16.sp,
-                        fontFamily = monteBold,
-                        modifier = Modifier.padding(start = 45.dp, end = 60.dp)
-                    )
-                    Row(modifier = Modifier.padding(end = 25.dp)) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.coins),
-                            contentDescription = "coins",
-                            modifier = Modifier
-                                .size(20.dp)
-                                .padding(end = 5.dp),
-                            tint = Color.Unspecified
-                        )
-                        Text(
-                            text = "8999999",
-                            color = textColor,
-                            fontSize = 15.sp,
-                            fontFamily = monteNormal,
-                        )
-                    }
-
-                }
-                Divider(
-                    color = textColor.copy(0.35f),
-                    thickness = 1.dp,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 15.dp)
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        text = "Earn Instant Points",
-                        color = textColor,
-                        fontSize = 16.sp,
-                        fontFamily = monteBold,
-                        modifier = Modifier.padding(top = 15.dp)
-                    )
-
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 20.dp, end = 25.dp, top = 15.dp, bottom = 25.dp),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Card(
-                        backgroundColor = Color(0xFF878c99),
-                        shape = RoundedCornerShape(10.dp),
-                        border = BorderStroke(1.dp, textColor),
+                    Divider(
+                        color = textColor.copy(0.35f),
+                        thickness = 1.dp,
                         modifier = Modifier
-                            .padding(end = 25.dp)
-                            .fillMaxWidth(0.5f)
-                            .clickable {
-                                navController.navigate(Screens.ReportWaste.route)
+                            .fillMaxWidth()
+                            .padding(horizontal = 15.dp)
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 15.dp),
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Points Earned      ",
+                            color = textColor,
+                            fontSize = 16.sp,
+                            fontFamily = monteBold,
+                            modifier = Modifier.padding(start = 45.dp, end = 60.dp)
+                        )
+                        Row(modifier = Modifier.padding(end = 25.dp)) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.coins),
+                                contentDescription = "coins",
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .padding(end = 5.dp),
+                                tint = Color.Unspecified
+                            )
+                            Text(
+                                text = pointsEarned,
+                                color = textColor,
+                                fontSize = 15.sp,
+                                fontFamily = monteNormal,
+                            )
+                        }
+
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 15.dp, bottom = 15.dp),
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Points Redeemed",
+                            color = textColor,
+                            fontSize = 16.sp,
+                            fontFamily = monteBold,
+                            modifier = Modifier.padding(start = 45.dp, end = 60.dp)
+                        )
+                        Row(modifier = Modifier.padding(end = 25.dp)) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.coins),
+                                contentDescription = "coins",
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .padding(end = 5.dp),
+                                tint = Color.Unspecified
+                            )
+                            Text(
+                                text = pointsRedeemed,
+                                color = textColor,
+                                fontSize = 15.sp,
+                                fontFamily = monteNormal,
+                            )
+                        }
+
+                    }
+                    Divider(
+                        color = textColor.copy(0.35f),
+                        thickness = 1.dp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 15.dp)
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = "Earn Instant Points",
+                            color = textColor,
+                            fontSize = 16.sp,
+                            fontFamily = monteBold,
+                            modifier = Modifier.padding(top = 15.dp)
+                        )
+
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 20.dp, end = 25.dp, top = 15.dp, bottom = 25.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Card(
+                            backgroundColor = Color(0xFF878c99),
+                            shape = RoundedCornerShape(10.dp),
+                            border = BorderStroke(1.dp, textColor),
+                            modifier = Modifier
+                                .padding(end = 25.dp)
+                                .fillMaxWidth(0.5f)
+                                .clickable {
+                                    navController.navigate(Screens.ReportWaste.route)
 //                        viewModel.getPlaces()
+                                }
+                        ) {
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.i1),
+                                    contentDescription = "image",
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier.size(80.dp)
+                                )
+                                Text(
+                                    text = "Report Waste",
+                                    color = Black,
+                                    fontFamily = monteSB,
+                                    modifier = Modifier.padding(
+                                        top = 10.dp,
+                                        start = 10.dp,
+                                        end = 10.dp,
+                                        bottom = 5.dp
+                                    )
+                                )
+                                Text(
+                                    text = "Reporting waste helps you earn points which you can use to redeem rewards.",
+                                    color = textColor,
+                                    fontSize = 10.sp,
+                                    fontFamily = monteBold,
+                                    modifier = Modifier.padding(
+                                        top = 3.dp,
+                                        start = 7.dp,
+                                        end = 7.dp,
+                                        bottom = 10.dp
+                                    ),
+                                    softWrap = true
+                                )
+
                             }
-                    ) {
-                        Column(
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
+
+                        }
+                        Card(
+                            backgroundColor = Color(0xFF6FCF97),
+                            shape = RoundedCornerShape(10.dp),
+                            border = BorderStroke(1.dp, textColor),
+                            modifier = Modifier.clickable {
+                                navController.navigate(Screens.CollectWasteLists.route)
+                            }
                         ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.i1),
-                                contentDescription = "image",
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier.size(80.dp)
-                            )
-                            Text(
-                                text = "Report Waste",
-                                color = Black,
-                                fontFamily = monteSB,
-                                modifier = Modifier.padding(
-                                    top = 10.dp,
-                                    start = 10.dp,
-                                    end = 10.dp,
-                                    bottom = 5.dp
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.i2),
+                                    contentDescription = "image",
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier.size(80.dp)
                                 )
-                            )
-                            Text(
-                                text = "Reporting waste helps you earn points which you can use to redeem rewards.",
-                                color = textColor,
-                                fontSize = 10.sp,
-                                fontFamily = monteBold,
-                                modifier = Modifier.padding(
-                                    top = 3.dp,
-                                    start = 7.dp,
-                                    end = 7.dp,
-                                    bottom = 10.dp
-                                ),
-                                softWrap = true
-                            )
+                                Text(
+                                    text = "Collect Waste",
+                                    color = Black,
+                                    fontFamily = monteSB,
+                                    modifier = Modifier.padding(
+                                        top = 10.dp,
+                                        start = 10.dp,
+                                        end = 10.dp,
+                                        bottom = 5.dp
+                                    )
+                                )
+                                Text(
+                                    text = "Reporting waste helps you earn points which you can use to redeem rewards.",
+                                    color = textColor,
+                                    fontSize = 10.sp,
+                                    fontFamily = monteBold,
+                                    modifier = Modifier.padding(
+                                        top = 3.dp,
+                                        start = 7.dp,
+                                        end = 7.dp,
+                                        bottom = 10.dp
+                                    ),
+                                    softWrap = true
+                                )
+
+                            }
 
                         }
-
                     }
-                    Card(
-                        backgroundColor = Color(0xFF6FCF97),
-                        shape = RoundedCornerShape(10.dp),
-                        border = BorderStroke(1.dp, textColor),
-                        modifier = Modifier.clickable {
-                            navController.navigate(Screens.CollectWasteLists.route)
-                        }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 20.dp, end = 25.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Column(
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.i2),
-                                contentDescription = "image",
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier.size(80.dp)
-                            )
-                            Text(
-                                text = "Collect Waste",
-                                color = Black,
-                                fontFamily = monteSB,
-                                modifier = Modifier.padding(
-                                    top = 10.dp,
-                                    start = 10.dp,
-                                    end = 10.dp,
-                                    bottom = 5.dp
-                                )
-                            )
-                            Text(
-                                text = "Reporting waste helps you earn points which you can use to redeem rewards.",
-                                color = textColor,
-                                fontSize = 10.sp,
-                                fontFamily = monteBold,
-                                modifier = Modifier.padding(
-                                    top = 3.dp,
-                                    start = 7.dp,
-                                    end = 7.dp,
-                                    bottom = 10.dp
-                                ),
-                                softWrap = true
-                            )
-
-                        }
-
-                    }
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 20.dp, end = 25.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Join Challenges",
-                        color = textColor,
-                        fontSize = 16.sp,
-                        fontFamily = monteNormal,
-                    )
-
-                    Text(
-                        text = "See all",
-                        color = textColor,
-                        fontSize = 16.sp,
-                        fontFamily = monteNormal,
-                        modifier = Modifier.clickable {
-                            navController.navigate(Screens.Community.route)
-                        }
-                    )
-
-                }
-
-
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    modifier = Modifier.padding(
-                        bottom = 100.dp,
-                        start = 15.dp,
-                        top = 10.dp,
-                        end = 15.dp
-                    ),
-                    contentPadding = PaddingValues(bottom = 25.dp)
-                ) {
-                    items(challengesList) { item ->
-                        RepeatingCard(
-                            type = item.type,
-                            emoji = item.emoji,
-                            title = item.title,
-                            date = item.date
+                        Text(
+                            text = "Join Challenges",
+                            color = textColor,
+                            fontSize = 16.sp,
+                            fontFamily = monteNormal,
                         )
+
+                        Text(
+                            text = "See all",
+                            color = textColor,
+                            fontSize = 16.sp,
+                            fontFamily = monteNormal,
+                            modifier = Modifier.clickable {
+                                navController.navigate(Screens.Community.route)
+                            }
+                        )
+
                     }
 
+
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        modifier = Modifier.padding(
+                            bottom = 100.dp,
+                            start = 15.dp,
+                            top = 10.dp,
+                            end = 15.dp
+                        ),
+                        contentPadding = PaddingValues(bottom = 25.dp)
+                    ) {
+                        items(challengesList) { item ->
+                            RepeatingCard(
+                                type = item.type,
+                                emoji = item.emoji,
+                                title = item.title,
+                                date = item.date
+                            )
+                        }
+
+                    }
+
+
                 }
-
-
             }
         }
     }

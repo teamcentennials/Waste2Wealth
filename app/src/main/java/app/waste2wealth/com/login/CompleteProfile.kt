@@ -399,6 +399,8 @@ fun CompleteProfile(navHostController: NavHostController) {
                                     gender = gender.text,
                                     organization = organization.text,
                                     address = address.text,
+                                    pointsEarned = 100,
+                                    pointsRedeemed = 0
                                 )
                                 coroutineScope.launch {
                                     dataStore.saveEmail(email.text)

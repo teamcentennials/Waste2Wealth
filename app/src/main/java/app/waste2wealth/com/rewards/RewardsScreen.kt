@@ -44,6 +44,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import app.waste2wealth.com.bottombar.BottomBar
 import app.waste2wealth.com.components.permissions.PermissionDrawer
+import app.waste2wealth.com.firebase.firestore.ProfileInfo
+import app.waste2wealth.com.firebase.firestore.updateInfoToFirebase
 import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.profile.ProfileImage
 import app.waste2wealth.com.ui.theme.appBackground
@@ -56,6 +58,8 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.jet.firestore.JetFirestore
+import com.jet.firestore.getListOfObjects
 
 @OptIn(
     ExperimentalPermissionsApi::class, ExperimentalComposeUiApi::class,
@@ -78,113 +82,187 @@ fun RewardsScreen(
     val permissionDrawerState = rememberBottomDrawerState(
         if (permissionState.allPermissionsGranted) BottomDrawerValue.Closed else BottomDrawerValue.Open
     )
-    PermissionDrawer(
-        drawerState = permissionDrawerState,
-        permissionState = permissionState,
-        rationaleText = "To continue, allow Report Waste2Wealth to access your device's location" +
-                ". Tap Settings > Permission, and turn \"Access Location On\" on.",
-        withoutRationaleText = "Location permission required for functionality of this app." +
-                " Please grant the permission.",
-    ) {
-        Scaffold(bottomBar = {
-            BottomBar(navController = navController)
-        }) {
-            var isCOinVisible by remember {
-                mutableStateOf(false)
+    var profileList by remember {
+        mutableStateOf<List<ProfileInfo>?>(null)
+    }
+    var userAddress by remember {
+        mutableStateOf("")
+    }
+    var phoneNumber by remember {
+        mutableStateOf("")
+    }
+    var gender by remember {
+        mutableStateOf("")
+    }
+    var organization by remember {
+        mutableStateOf("")
+    }
+    var pointsEarned by remember {
+        mutableStateOf(0)
+    }
+    var pointsRedeemed by remember {
+        mutableStateOf(0)
+    }
+    var noOfTimesReported by remember {
+        mutableStateOf(0)
+    }
+    var noOfTimesCollected by remember {
+        mutableStateOf(0)
+    }
+    var noOfTimesActivity by remember {
+        mutableStateOf(0)
+    }
+    JetFirestore(path = {
+        collection("ProfileInfo")
+    }, onRealtimeCollectionFetch = { value, _ ->
+        profileList = value?.getListOfObjects()
+    }) {
+        if (profileList != null) {
+            for (i in profileList!!) {
+                if (i.email == email) {
+                    userAddress = i.address ?: ""
+                    gender = i.gender ?: ""
+                    phoneNumber = i.phoneNumber ?: ""
+                    organization = i.organization ?: ""
+                    pointsEarned = i.pointsEarned
+                    pointsRedeemed = i.pointsRedeemed
+                    noOfTimesReported = i.noOfTimesReported
+                    noOfTimesCollected = i.noOfTimesCollected
+                    noOfTimesActivity = i.noOfTimesActivity
+                }
             }
-            println(it)
-            Box(modifier = Modifier.fillMaxSize()) {
+        }
+
+        PermissionDrawer(
+            drawerState = permissionDrawerState,
+            permissionState = permissionState,
+            rationaleText = "To continue, allow Report Waste2Wealth to access your device's location" +
+                    ". Tap Settings > Permission, and turn \"Access Location On\" on.",
+            withoutRationaleText = "Location permission required for functionality of this app." +
+                    " Please grant the permission.",
+        ) {
+            Scaffold(bottomBar = {
+                BottomBar(navController = navController)
+            }) {
+                var isCOinVisible by remember {
+                    mutableStateOf(false)
+                }
+                println(it)
                 Box(modifier = Modifier.fillMaxSize()) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(appBackground)
-                    ) {
-                        Row(
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        Column(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    top = 35.dp,
-                                    bottom = 35.dp,
-                                    start = 20.dp,
-                                    end = 20.dp
-                                ),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+                                .fillMaxSize()
+                                .background(appBackground)
                         ) {
-                            Text(
-                                text = "Rewards",
-                                color = textColor,
-                                fontSize = 35.sp,
-                                fontFamily = monteBold,
-                            )
-                            ProfileImage(
-                                imageUrl = pfp,
+                            Row(
                                 modifier = Modifier
-                                    .size(60.dp)
-                                    .border(
-                                        width = 1.dp,
-                                        color = appBackground,
-                                        shape = CircleShape
-                                    )
-                                    .padding(3.dp)
-                                    .clip(CircleShape)
-                                    .clickable {
-                                        navController.navigate(Screens.Profile.route)
-                                    },
-                            )
-                        }
-                        val context = LocalContext.current
-                        LazyVerticalGrid(
-                            columns = GridCells.Fixed(2),
-                            modifier = Modifier.padding(
-                                bottom = 50.dp,
-                                start = 15.dp,
-                                top = 0.dp,
-                                end = 15.dp
-                            ),
-                            contentPadding = PaddingValues(bottom = 25.dp)
-                        ) {
+                                    .fillMaxWidth()
+                                    .padding(
+                                        top = 35.dp,
+                                        bottom = 35.dp,
+                                        start = 20.dp,
+                                        end = 20.dp
+                                    ),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "Rewards",
+                                    color = textColor,
+                                    fontSize = 35.sp,
+                                    fontFamily = monteBold,
+                                )
+                                ProfileImage(
+                                    imageUrl = pfp,
+                                    modifier = Modifier
+                                        .size(60.dp)
+                                        .border(
+                                            width = 1.dp,
+                                            color = appBackground,
+                                            shape = CircleShape
+                                        )
+                                        .padding(3.dp)
+                                        .clip(CircleShape)
+                                        .clickable {
+                                            navController.navigate(Screens.Profile.route)
+                                        },
+                                )
+                            }
+                            val context = LocalContext.current
+                            LazyVerticalGrid(
+                                columns = GridCells.Fixed(2),
+                                modifier = Modifier.padding(
+                                    bottom = 50.dp,
+                                    start = 15.dp,
+                                    top = 0.dp,
+                                    end = 15.dp
+                                ),
+                                contentPadding = PaddingValues(bottom = 25.dp)
+                            ) {
 
-                            items(allRewards) { item ->
-                                RepeatingRewards(
-                                    name = item.name,
-                                    expiry = item.expiry,
-                                    points = item.points
-                                ) {
-                                    isCOinVisible = true
-                                    Toast.makeText(
-                                        context,
-                                        "You have earned ${item.points} points",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                items(allRewards) { item ->
+                                    RepeatingRewards(
+                                        name = item.name,
+                                        expiry = item.expiry,
+                                        points = item.points
+                                    ) {
+                                        if (pointsEarned >= item.points.toInt()) {
+                                            isCOinVisible = true
+                                            Toast.makeText(
+                                                context,
+                                                "You have earned ${item.points} points",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                            updateInfoToFirebase(
+                                                context,
+                                                name = name,
+                                                email = email,
+                                                phoneNumber = phoneNumber,
+                                                gender = gender,
+                                                organization = organization,
+                                                address = userAddress,
+                                                pointsEarned = pointsEarned - item.points.toInt(),
+                                                pointsRedeemed = pointsRedeemed + item.points.toInt(),
+                                                noOfTimesReported = noOfTimesReported,
+                                                noOfTimesCollected = noOfTimesCollected + 1,
+                                                noOfTimesActivity = noOfTimesActivity,
+                                            )
 
+                                        } else {
+                                            Toast.makeText(
+                                                context,
+                                                "You do not have enough points to claim this reward",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                    }
                                 }
+
                             }
 
                         }
+                    }
+                    if (isCOinVisible) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.BottomCenter
+                        ) {
+                            val currenanim by rememberLottieComposition(
+                                spec = LottieCompositionSpec.Asset("coins.json")
+                            )
+                            LottieAnimation(
+                                composition = currenanim,
+                                iterations = 1,
+                                contentScale = ContentScale.Crop,
+                                speed = 1f,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .size(250.dp)
+                            )
+                        }
 
                     }
-                }
-                if (isCOinVisible) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.BottomCenter
-                    ) {
-                        val currenanim by rememberLottieComposition(
-                            spec = LottieCompositionSpec.Asset("coins.json")
-                        )
-                        LottieAnimation(
-                            composition = currenanim,
-                            iterations = 1,
-                            contentScale = ContentScale.Crop,
-                            speed = 1f,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .size(250.dp)
-                        )
-                    }
-
                 }
             }
         }
