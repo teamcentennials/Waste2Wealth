@@ -78,8 +78,6 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -90,7 +88,13 @@ import java.io.ByteArrayOutputStream
     ExperimentalMaterialApi::class
 )
 @Composable
-fun SuccessfullyCollected(navController: NavHostController, viewModel: LocationViewModel) {
+fun SuccessfullyCollected(
+    navController: NavHostController,
+    viewModel: LocationViewModel,
+    email: String,
+    name: String,
+    pfp: String
+) {
     val radioOptions = listOf("Yes", "No")
     val depositedWaste = listOf("Yes", "No")
     var receiver by remember { mutableStateOf(radioOptions[0]) }
@@ -106,7 +110,7 @@ fun SuccessfullyCollected(navController: NavHostController, viewModel: LocationV
     var imageBitmap by remember {
         mutableStateOf<ImageBitmap?>(null)
     }
-    val user by remember { mutableStateOf(Firebase.auth.currentUser) }
+
     var bitmap by remember {
         mutableStateOf<Bitmap?>(null)
     }
@@ -381,7 +385,7 @@ fun SuccessfullyCollected(navController: NavHostController, viewModel: LocationV
                                 var imageName = (1..10)
                                     .map { allowedChars.random() }
                                     .joinToString("")
-                                imageName = "Collected/${user?.email}/${imageName}.jpg"
+                                imageName = "Collected/${email}/${imageName}.jpg"
                                 val imageRef =
                                     storageRef.child(imageName) // Set desired storage location
 
@@ -404,7 +408,7 @@ fun SuccessfullyCollected(navController: NavHostController, viewModel: LocationV
                                                 longitude = viewModel.longitude,
                                                 imagePath = imageName,
                                                 timeStamp = System.currentTimeMillis(),
-                                                userEmail = user?.email ?: "",
+                                                userEmail = email ?: "",
                                                 isWasteCollected = receiver == "Yes",
                                                 allWasteCollected = receiver2 == "Yes",
                                                 feedBack = feedback.text,

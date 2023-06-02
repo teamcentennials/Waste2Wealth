@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -50,6 +51,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import app.waste2wealth.com.R
+import app.waste2wealth.com.UserDatastore
 import app.waste2wealth.com.firebase.firestore.ProfileInfo
 import app.waste2wealth.com.login.rememberFirebaseAuthLauncher
 import app.waste2wealth.com.navigation.Screens
@@ -74,40 +76,38 @@ fun Onboarding(navHostController: NavHostController) {
         ObData(
             image = R.drawable.ob1,
             title = "Welcome",
-            description = "Get started with the Journey of making you City\n" +
-                    " Clean and Sustainable\n" +
-                    " while earning Good Karma points  "
+            description = "Making Cities Sustainable, Rewarding, and Fun."
         )
     )
     items.add(
         ObData(
             image = R.drawable.ob2,
             title = "Report and collect Waste ",
-            description = "Blah Blah"
+            description = "Make a difference by reporting and collecting waste in your community."
         )
     )
     items.add(
         ObData(
-            image = R.drawable.ob2,
+            image = R.drawable.ob3,
             title = "Track your \n" +
                     "social Contribution",
-            description = "Blah Blah"
+            description = "See your impact grow as you report and collect waste."
         )
     )
     items.add(
         ObData(
-            image = R.drawable.ob2,
+            image = R.drawable.ob4,
             title = "Team up \n" +
                     "With your \n" +
                     "Local Communities",
-            description = "Blah Blah"
+            description = "Join forces for a cleaner environment."
         )
     )
     items.add(
         ObData(
-            image = R.drawable.ob2,
-            title = "Get Rewarded",
-            description = "Blah Blah"
+            image = R.drawable.ob5,
+            title = "Get Rewarded ",
+            description = "Earn points for your efforts and redeem exciting rewards or donate it."
         )
     )
 
@@ -133,6 +133,8 @@ fun Bgresource(
     var profileList by remember {
         mutableStateOf<List<ProfileInfo>?>(null)
     }
+    val dataStore = UserDatastore(context)
+    val coroutineScope = rememberCoroutineScope()
     JetFirestore(path = {
         collection("ProfileInfo")
     }, onRealtimeCollectionFetch = { value, _ ->
@@ -141,6 +143,12 @@ fun Bgresource(
         LaunchedEffect(key1 = user) {
             if (user != null) {
                 val registered = profileList?.any { it.email == user?.email }
+
+                coroutineScope.launch {
+                    dataStore.saveEmail(user?.email.toString())
+                    dataStore.savePfp(user?.photoUrl.toString())
+                    dataStore.saveName(user?.displayName.toString())
+                }
                 navHostController.popBackStack()
                 navHostController.navigate(
                     if (registered == true)
@@ -168,10 +176,15 @@ fun Bgresource(
             )
         ) {
             val coroutineScope = rememberCoroutineScope()
-            HorizontalPager(pageCount = item.size, state = pagerState) { page ->
+            HorizontalPager(
+                pageCount = item.size,
+                state = pagerState,
+                modifier = Modifier.background(appBackground)
+            ) { page ->
                 Box(
                     modifier = modifier
                         .fillMaxWidth()
+                        .background(appBackground)
                         .fillMaxHeight(0.95f)
                 ) {
                     Column(
@@ -194,6 +207,7 @@ fun Bgresource(
                                 elevation = 20.dp,
                                 modifier = Modifier
                                     .fillMaxWidth()
+                                    .background(appBackground)
                                     .fillMaxHeight(2.5f),
                             )
                             {
@@ -207,12 +221,17 @@ fun Bgresource(
                                     Text(
                                         text = item[page].title,
                                         fontSize = 30.sp,
-                                        color = textColor
+                                        color = textColor,
+                                        softWrap = true,
+                                        modifier = Modifier.offset(y = (-20).dp)
                                     )
                                     Text(
                                         text = item[page].description,
                                         color = textColor,
-                                        modifier = Modifier.padding(vertical = 50.dp)
+                                        modifier = Modifier
+                                            .padding(vertical = 50.dp)
+                                            .offset(y = (-20).dp),
+                                        softWrap = true,
                                     )
                                 }
                             }
@@ -259,7 +278,7 @@ fun Bgresource(
                                         contentAlignment = Alignment.Center,
                                         modifier = Modifier.size(100.dp)
                                     ) {
-                                        Canvas(modifier = Modifier.size(100.dp)) {
+                                        Canvas(modifier = Modifier.size(50.dp)) {
                                             drawArc(
                                                 color = Color(0xFF01FF73),
                                                 startAngle = -90f,
@@ -284,7 +303,7 @@ fun Bgresource(
                                         ) {
                                             Icon(
                                                 modifier = Modifier
-                                                    .size(35.dp)
+                                                    .size(25.dp)
                                                     .clip(CircleShape),
                                                 imageVector = Icons.Filled.ArrowForward,
                                                 contentDescription = "next",
@@ -307,7 +326,7 @@ fun Bgresource(
                                             .clickable {
                                                 launcher.launch(googleSignInClient.signInIntent)
                                             }
-                                            .clip(RoundedCornerShape(15.dp))
+                                            .clip(RoundedCornerShape(80.dp))
                                     ) {
                                         Icon(
                                             painter = painterResource(id = R.drawable.gooogle),

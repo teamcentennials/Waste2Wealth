@@ -51,16 +51,19 @@ import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.textColor
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 @OptIn(
     ExperimentalMaterialApi::class, ExperimentalFoundationApi::class,
     ExperimentalPermissionsApi::class, ExperimentalComposeUiApi::class
 )
 @Composable
-fun Community(navController: NavHostController) {
-    val user by remember { mutableStateOf(Firebase.auth.currentUser) }
+fun Community(
+    navController: NavHostController,
+    email: String,
+    name: String,
+    pfp: String
+) {
+
     val cList = listOf("Challenges", "Clubs", "Posts")
     var tabIndex by remember { mutableStateOf(0) }
     val permissionState = rememberMultiplePermissionsState(
@@ -108,7 +111,7 @@ fun Community(navController: NavHostController) {
                         fontFamily = monteBold,
                     )
                     ProfileImage(
-                        imageUrl = user?.photoUrl,
+                        imageUrl = pfp,
                         modifier = Modifier
                             .size(60.dp)
                             .border(

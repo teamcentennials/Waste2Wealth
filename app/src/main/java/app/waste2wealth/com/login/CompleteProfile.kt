@@ -18,6 +18,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ExposedDropdownMenuBox
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -40,6 +43,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,6 +56,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import app.waste2wealth.com.UserDatastore
 import app.waste2wealth.com.firebase.firestore.updateInfoToFirebase
 import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.ui.theme.appBackground
@@ -64,7 +69,9 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CompleteProfile(navHostController: NavHostController) {
     var user by remember { mutableStateOf(Firebase.auth.currentUser) }
@@ -106,6 +113,23 @@ fun CompleteProfile(navHostController: NavHostController) {
     var isGenderCorrect by remember {
         mutableStateOf(false)
     }
+    var isExpanded by remember {
+        mutableStateOf(false)
+    }
+    var isGenderExpansded by remember {
+        mutableStateOf(false)
+    }
+    var listOfOrganizations by remember {
+        mutableStateOf(
+            mutableListOf(
+                "Individual",
+                "Organization"
+            )
+        )
+    }
+    var listOfGender by remember { mutableStateOf(mutableListOf("Male", "Female", "Other")) }
+    val dataStore = UserDatastore(context)
+    val coroutineScope = rememberCoroutineScope()
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopStart) {
         Column(
             modifier = Modifier
@@ -161,7 +185,7 @@ fun CompleteProfile(navHostController: NavHostController) {
                 imeAction = ImeAction.Next,
             )
             TextFieldWithIcons(
-                textValue = "Name",
+                textValue = "Name/Organization Name",
                 placeholder = "Enter Your Name",
                 icon = Icons.Filled.Person,
                 mutableText = fullName,
@@ -171,17 +195,43 @@ fun CompleteProfile(navHostController: NavHostController) {
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next,
             )
-            TextFieldWithIcons(
-                textValue = "Organization",
-                placeholder = "Enter Your Organization",
-                icon = Icons.Filled.CardMembership,
-                mutableText = organization,
-                onValueChanged = {
-                    organization = it
-                },
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next,
-            )
+            ExposedDropdownMenuBox(
+                expanded = isExpanded,
+                onExpandedChange = {
+                    isExpanded = it
+                }
+            ) {
+                TextFieldWithIcons(
+                    textValue = "Type of Membership",
+                    placeholder = "Type of Membership",
+                    icon = Icons.Filled.CardMembership,
+                    mutableText = organization,
+                    onValueChanged = {
+                        organization = it
+                    },
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next,
+                    isEnabled = false
+                )
+                ExposedDropdownMenu(
+                    expanded = isExpanded,
+                    onDismissRequest = {
+                        isExpanded = false
+                    }) {
+                    listOfOrganizations.forEach {
+                        DropdownMenuItem(onClick = {
+                            organization = TextFieldValue(it)
+                            isExpanded = false
+                        }) {
+                            Text(text = it)
+                        }
+                    }
+
+
+                }
+
+            }
+
             TextFieldWithIcons(
                 textValue = "Phone Number",
                 placeholder = "Phone Number (with Country Code)",
@@ -251,19 +301,45 @@ fun CompleteProfile(navHostController: NavHostController) {
                 imeAction = ImeAction.Next,
                 isEnabled = isOtpSent,
             )
-            TextFieldWithIcons(
-                textValue = "Gender",
-                placeholder = "Enter Your Gender",
-                icon = Icons.Filled.SupervisorAccount,
-                mutableText = gender,
-                onValueChanged = {
-                    gender = it
-                },
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next,
-                isTrailingVisible = true,
-                trailingIcon = if (!isGenderCorrect) Icons.Filled.NotInterested else Icons.Filled.Check,
-            )
+            ExposedDropdownMenuBox(
+                expanded = isGenderExpansded,
+                onExpandedChange = {
+                    isGenderExpansded = it
+                }
+            ) {
+                TextFieldWithIcons(
+                    textValue = "Gender",
+                    placeholder = "Enter Your Gender",
+                    icon = Icons.Filled.SupervisorAccount,
+                    mutableText = gender,
+                    onValueChanged = {
+                        gender = it
+                    },
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next,
+                    isTrailingVisible = true,
+                    trailingIcon = if (!isGenderCorrect) Icons.Filled.NotInterested else Icons.Filled.Check,
+                    isEnabled = false
+                )
+                ExposedDropdownMenu(
+                    expanded = isGenderExpansded,
+                    onDismissRequest = {
+                        isGenderExpansded = false
+                    }) {
+                    listOfGender.forEach {
+                        DropdownMenuItem(onClick = {
+                            gender = TextFieldValue(it)
+                            isGenderExpansded = false
+                        }) {
+                            Text(text = it)
+                        }
+                    }
+
+
+                }
+
+            }
+
             TextFieldWithIcons(
                 textValue = "Address",
                 placeholder = "Enter Your Address",
@@ -324,6 +400,12 @@ fun CompleteProfile(navHostController: NavHostController) {
                                     organization = organization.text,
                                     address = address.text,
                                 )
+                                coroutineScope.launch {
+                                    dataStore.saveEmail(email.text)
+                                    dataStore.savePfp(user?.photoUrl.toString())
+                                    dataStore.saveName(fullName.text)
+                                }
+
                                 navHostController.navigate(Screens.Dashboard.route)
                             } else {
                                 Toast.makeText(
@@ -343,7 +425,7 @@ fun CompleteProfile(navHostController: NavHostController) {
 
                     },
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(0xFF1573FE),
+                        backgroundColor = Color(0xFFFD5065),
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -413,7 +495,8 @@ fun TextFieldWithIcons(
             .fillMaxWidth(),
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = appBackground,
-            textColor = textColor
+            textColor = textColor,
+            disabledTextColor = textColor
         ),
         enabled = isEnabled
     )

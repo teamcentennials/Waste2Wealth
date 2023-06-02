@@ -107,6 +107,7 @@ dependencies {
     implementation(libs.dagger.hilt)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.datastore.core)
     kapt(libs.dagger.hilt.kapt)
     implementation(libs.dagger.hilt.navigation)
 
@@ -131,6 +132,7 @@ dependencies {
     implementation("io.ktor:ktor-client-android:1.6.3")
     implementation("io.ktor:ktor-client-serialization:1.6.3")
     implementation("io.ktor:ktor-client-logging-jvm:1.6.3")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 //    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
     implementation("io.ktor:ktor-client-gson:1.6.3")
     implementation("com.google.android.gms:play-services-location:21.0.1")

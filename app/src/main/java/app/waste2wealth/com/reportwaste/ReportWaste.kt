@@ -84,8 +84,6 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -99,7 +97,10 @@ import java.io.ByteArrayOutputStream
 @Composable
 fun ReportWaste(
     navController: NavHostController,
-    viewModel: LocationViewModel
+    viewModel: LocationViewModel,
+    email: String,
+    name: String,
+    pfp: String
 ) {
     val permissionState = rememberMultiplePermissionsState(
         permissions = listOf(
@@ -115,7 +116,7 @@ fun ReportWaste(
     var address by remember {
         mutableStateOf("")
     }
-    val user by remember { mutableStateOf(Firebase.auth.currentUser) }
+
     var isDialogVisible by remember { mutableStateOf(false) }
     var imageBitmap by remember {
         mutableStateOf<ImageBitmap?>(null)
@@ -381,7 +382,7 @@ fun ReportWaste(
                                     var imageName = (1..10)
                                         .map { allowedChars.random() }
                                         .joinToString("")
-                                    imageName = "Reported/${user?.email}/${imageName}.jpg"
+                                    imageName = "Reported/${email}/${imageName}.jpg"
 
                                     val imageRef =
                                         storageRef.child(imageName) // Set desired storage location
@@ -405,7 +406,7 @@ fun ReportWaste(
                                                     longitude = viewModel.longitude,
                                                     imagePath = imageName,
                                                     timeStamp = System.currentTimeMillis(),
-                                                    userEmail = user?.email ?: "",
+                                                    userEmail = email ?: "",
                                                 )
                                                 isCOinVisible = true
 

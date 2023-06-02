@@ -80,8 +80,6 @@ import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
@@ -91,8 +89,14 @@ import java.io.ByteArrayOutputStream
     ExperimentalMaterialApi::class
 )
 @Composable
-fun AllActivities(navController: NavHostController, viewModel: LocationViewModel) {
-    val user by remember { mutableStateOf(Firebase.auth.currentUser) }
+fun AllActivities(
+    navController: NavHostController,
+    viewModel: LocationViewModel,
+    email: String,
+    name: String,
+    pfp: String
+) {
+
     val permissionState = rememberMultiplePermissionsState(
         permissions = listOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -161,7 +165,7 @@ fun AllActivities(navController: NavHostController, viewModel: LocationViewModel
                         fontFamily = monteBold,
                     )
                     ProfileImage(
-                        imageUrl = user?.photoUrl,
+                        imageUrl = pfp,
                         modifier = Modifier
                             .size(60.dp)
                             .border(
@@ -359,7 +363,7 @@ fun AllActivities(navController: NavHostController, viewModel: LocationViewModel
                                 var imageName = (1..10)
                                     .map { allowedChars.random() }
                                     .joinToString("")
-                                imageName = "TemporaryActivity/${user?.email}/${imageName}.jpg"
+                                imageName = "TemporaryActivity/${email}/${imageName}.jpg"
 
                                 val imageRef =
                                     storageRef.child(imageName) // Set desired storage location
@@ -381,7 +385,7 @@ fun AllActivities(navController: NavHostController, viewModel: LocationViewModel
                                                 context = context,
                                                 startTime = System.currentTimeMillis(),
                                                 endTime = 0L,
-                                                email = user?.email ?: "",
+                                                email = email ?: "",
                                                 beforeTaskPath = imageName
                                             )
 

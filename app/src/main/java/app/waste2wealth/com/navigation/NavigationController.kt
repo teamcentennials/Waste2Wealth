@@ -9,10 +9,13 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import app.waste2wealth.com.UserDatastore
 import app.waste2wealth.com.activity.AllActivities
 import app.waste2wealth.com.activity.MyRecordings
 import app.waste2wealth.com.activity.StopRecording
@@ -45,6 +48,11 @@ fun NavigationController(
     navController: NavHostController
 ) {
     val viewModel: LocationViewModel = hiltViewModel()
+    val context = LocalContext.current
+    val store = UserDatastore(context)
+    val email = store.getEmail.collectAsState(initial = "")
+    val profile = store.getPfp.collectAsState(initial = "")
+    val name = store.getName.collectAsState(initial = "")
     AnimatedNavHost(navController = navController, startDestination = Screens.Splash.route) {
         composable(
             route = Screens.LoginScreen.route,
@@ -107,12 +115,22 @@ fun NavigationController(
             }
         ) {
 
-            NewDashboard(navController = navController)
+            NewDashboard(
+                navController = navController,
+                email = email.value,
+                name = name.value,
+                pfp = profile.value
+            )
 //            DashBoardPage(navHostController = navController, locationViewModel = locationViewModel)
         }
         composable(Screens.Profile.route) {
 //            ProfileScreen(navHostController = navController)
-            NewProfileScreen(navController = navController)
+            NewProfileScreen(
+                navController = navController,
+                email = email.value,
+                name = name.value,
+                pfp = profile.value
+            )
         }
         composable(Screens.Onboarding.route) {
             Onboarding(navHostController = navController)
@@ -128,10 +146,20 @@ fun NavigationController(
 
         }
         composable(Screens.Community.route) {
-            Community(navController = navController)
+            Community(
+                navController = navController,
+                email = email.value,
+                name = name.value,
+                pfp = profile.value
+            )
         }
         composable(Screens.ReportWaste.route) {
-            ReportWaste(navController = navController, viewModel = viewModel)
+            ReportWaste(
+                navController = navController, viewModel = viewModel,
+                email = email.value,
+                name = name.value,
+                pfp = profile.value
+            )
         }
         composable(Screens.CollectWasteLists.route) {
             CollectWaste(navController = navController, viewModel = viewModel)
@@ -140,10 +168,20 @@ fun NavigationController(
             CollectWasteInfo(navController = navController, viewModel = viewModel)
         }
         composable(Screens.CollectedWasteSuccess.route) {
-            SuccessfullyCollected(navController = navController, viewModel = viewModel)
+            SuccessfullyCollected(
+                navController = navController, viewModel = viewModel,
+                email = email.value,
+                name = name.value,
+                pfp = profile.value
+            )
         }
         composable(Screens.AllActivities.route) {
-            AllActivities(navController = navController, viewModel = viewModel)
+            AllActivities(
+                navController = navController, viewModel = viewModel,
+                email = email.value,
+                name = name.value,
+                pfp = profile.value
+            )
         }
         composable(Screens.MyRecordings.route) {
             MyRecordings(navController = navController, viewModel = viewModel)
@@ -152,7 +190,12 @@ fun NavigationController(
             StopRecording(navController = navController, viewModel = viewModel)
         }
         composable(Screens.Rewards.route) {
-            RewardsScreen(navController = navController)
+            RewardsScreen(
+                navController = navController,
+                email = email.value,
+                name = name.value,
+                pfp = profile.value
+            )
         }
         composable(
             Screens.TaskDetail.route

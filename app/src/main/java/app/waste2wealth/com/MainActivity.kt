@@ -34,6 +34,7 @@ class MainActivity : ComponentActivity() {
             Waste2WealthTheme {
                 val systemUiController = rememberSystemUiController()
                 systemUiController.setSystemBarsColor(appBackground)
+                systemUiController.setNavigationBarColor(appBackground)
                 val navController = rememberAnimatedNavController()
                 viewModel = ViewModelProvider(this)[LocationViewModel::class.java]
 

@@ -30,6 +30,7 @@ firebase-bom = "32.0.0"
 firebase-firestore-ktx = "24.6.1"
 jetFirestore = "1.0.2"
 appcompat = "1.6.1"
+datastoreCore = "1.0.0"
 
 [libraries]
 androidx-navigation-compose-2_5_3 = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
@@ -87,6 +88,7 @@ play-services-auth = { group = "com.google.android.gms", name = "play-services-a
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebase-auth-ktx" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebase-firestore-ktx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-datastore-core = { group = "androidx.datastore", name = "datastore-core", version.ref = "datastoreCore" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

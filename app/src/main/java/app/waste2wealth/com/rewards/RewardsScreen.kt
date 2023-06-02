@@ -56,16 +56,19 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 @OptIn(
     ExperimentalPermissionsApi::class, ExperimentalComposeUiApi::class,
     ExperimentalMaterialApi::class
 )
 @Composable
-fun RewardsScreen(navController: NavHostController) {
-    val user by remember { mutableStateOf(Firebase.auth.currentUser) }
+fun RewardsScreen(
+    navController: NavHostController,
+    email: String,
+    name: String,
+    pfp: String
+) {
+
     val permissionState = rememberMultiplePermissionsState(
         permissions = listOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -116,7 +119,7 @@ fun RewardsScreen(navController: NavHostController) {
                                 fontFamily = monteBold,
                             )
                             ProfileImage(
-                                imageUrl = user?.photoUrl,
+                                imageUrl = pfp,
                                 modifier = Modifier
                                     .size(60.dp)
                                     .border(

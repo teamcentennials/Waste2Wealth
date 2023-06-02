@@ -19,3 +19,6 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep class com.google.firebase.auth.** { *; }
+-keep class com.google.android.gms.common.api.** { *; }

@@ -2,9 +2,7 @@ package app.waste2wealth.com.dashboard
 
 import android.Manifest
 import android.app.Activity
-import android.view.View
 import androidx.activity.compose.BackHandler
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -44,13 +42,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import app.waste2wealth.com.R
@@ -67,8 +63,6 @@ import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import java.util.Calendar
 import java.util.TimeZone
 import kotlin.system.exitProcess
@@ -79,8 +73,13 @@ import kotlin.system.exitProcess
     ExperimentalComposeUiApi::class
 )
 @Composable
-fun NewDashboard(navController: NavHostController, viewModel: LocationViewModel = hiltViewModel()) {
-    val user by remember { mutableStateOf(Firebase.auth.currentUser) }
+fun NewDashboard(
+    navController: NavHostController,
+    viewModel: LocationViewModel = hiltViewModel(),
+    email: String,
+    name: String,
+    pfp: String
+) {
     val permissionState = rememberMultiplePermissionsState(
         permissions = listOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -158,24 +157,23 @@ fun NewDashboard(navController: NavHostController, viewModel: LocationViewModel 
                         11 -> month = "November"
                         12 -> month = "December"
                     }
-                    println("My User is ${user?.displayName}")
                     Column {
                         Text(
-                            text = "Hi, ${user?.displayName}",
+                            text = "Hi, $name",
                             color = textColor,
                             fontSize = 20.sp,
                             fontFamily = monteSB,
                             modifier = Modifier.padding(bottom = 7.dp)
                         )
                         Text(
-                            text = "$currDay $currentDate $month",
+                            text = "$currDay, $currentDate $month",
                             color = textColor,
                             fontSize = 13.sp,
                             fontFamily = monteSB,
                             modifier = Modifier.padding(bottom = 7.dp)
                         )
                         Text(
-                            text = "Welcome Back to your Dashboard",
+                            text = "Welcome back to your Dashboard",
                             color = textColor,
                             fontSize = 13.sp,
                             fontFamily = monteSB,
@@ -183,7 +181,7 @@ fun NewDashboard(navController: NavHostController, viewModel: LocationViewModel 
                         )
                     }
                     ProfileImage(
-                        imageUrl = user?.photoUrl,
+                        imageUrl = pfp,
                         modifier = Modifier
                             .size(60.dp)
                             .border(
@@ -301,6 +299,7 @@ fun NewDashboard(navController: NavHostController, viewModel: LocationViewModel 
                         border = BorderStroke(1.dp, textColor),
                         modifier = Modifier
                             .padding(end = 25.dp)
+                            .fillMaxWidth(0.5f)
                             .clickable {
                                 navController.navigate(Screens.ReportWaste.route)
 //                        viewModel.getPlaces()
@@ -326,6 +325,19 @@ fun NewDashboard(navController: NavHostController, viewModel: LocationViewModel 
                                     end = 10.dp,
                                     bottom = 5.dp
                                 )
+                            )
+                            Text(
+                                text = "Reporting waste helps you earn points which you can use to redeem rewards.",
+                                color = textColor,
+                                fontSize = 10.sp,
+                                fontFamily = monteBold,
+                                modifier = Modifier.padding(
+                                    top = 3.dp,
+                                    start = 7.dp,
+                                    end = 7.dp,
+                                    bottom = 10.dp
+                                ),
+                                softWrap = true
                             )
 
                         }
@@ -359,6 +371,19 @@ fun NewDashboard(navController: NavHostController, viewModel: LocationViewModel 
                                     end = 10.dp,
                                     bottom = 5.dp
                                 )
+                            )
+                            Text(
+                                text = "Reporting waste helps you earn points which you can use to redeem rewards.",
+                                color = textColor,
+                                fontSize = 10.sp,
+                                fontFamily = monteBold,
+                                modifier = Modifier.padding(
+                                    top = 3.dp,
+                                    start = 7.dp,
+                                    end = 7.dp,
+                                    bottom = 10.dp
+                                ),
+                                softWrap = true
                             )
 
                         }
@@ -395,7 +420,7 @@ fun NewDashboard(navController: NavHostController, viewModel: LocationViewModel 
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     modifier = Modifier.padding(
-                        bottom = 15.dp,
+                        bottom = 100.dp,
                         start = 15.dp,
                         top = 10.dp,
                         end = 15.dp
@@ -436,34 +461,19 @@ fun RepeatingCard(
         ),
         modifier = Modifier.padding(end = 10.dp)
     ) {
+        var register by remember { mutableStateOf("Register") }
         Column(modifier = Modifier.padding(15.dp)) {
             Text(
                 text = type,
                 color = Black,
-                fontSize = 16.sp,
+                fontSize = 13.sp,
                 fontFamily = monteNormal,
                 modifier = Modifier.padding(bottom = 10.dp)
-            )
-            AndroidView(
-                factory = { context ->
-                    AppCompatTextView(context).apply {
-                        setTextColor(Black.toArgb())
-                        text = emoji
-                        textSize = 35.0F
-                        textAlignment = View.TEXT_ALIGNMENT_CENTER
-                        alpha = 1f
-                    }
-                },
-                update = { update ->
-                    update.apply {
-                        text = emoji
-                    }
-                },
             )
             Text(
                 text = title,
                 color = Black,
-                fontSize = 25.sp,
+                fontSize = 18.sp,
                 fontFamily = monteSB,
                 modifier = Modifier.padding(bottom = 10.dp),
                 softWrap = true
@@ -477,7 +487,9 @@ fun RepeatingCard(
             )
 
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    register = "Registered"
+                },
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = Color(0xFFFD5065),
                     contentColor = Color.White
@@ -486,7 +498,7 @@ fun RepeatingCard(
                 modifier = Modifier.padding(start = 10.dp)
             ) {
                 Text(
-                    text = "Register Now",
+                    text = register,
                     color = Color.White,
                     fontSize = 12.sp,
                     fontFamily = monteSB,

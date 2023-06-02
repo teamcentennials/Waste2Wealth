@@ -53,8 +53,6 @@ import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.jet.firestore.JetFirestore
 import com.jet.firestore.getListOfObjects
 
@@ -63,8 +61,12 @@ import com.jet.firestore.getListOfObjects
     ExperimentalComposeUiApi::class
 )
 @Composable
-fun NewProfileScreen(navController: NavHostController) {
-    val user by remember { mutableStateOf(Firebase.auth.currentUser) }
+fun NewProfileScreen(
+    navController: NavHostController,
+    email: String,
+    name: String,
+    pfp: String
+) {
     val permissionState = rememberMultiplePermissionsState(
         permissions = listOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -104,7 +106,7 @@ fun NewProfileScreen(navController: NavHostController) {
                 }) {
                     if (profileList != null) {
                         for (i in profileList!!) {
-                            if (i.email == user?.email) {
+                            if (i.email == email) {
                                 myPhoneNumber = i.phoneNumber ?: ""
                             }
                         }
@@ -117,7 +119,7 @@ fun NewProfileScreen(navController: NavHostController) {
                         horizontalArrangement = Arrangement.Center
                     ) {
                         ProfileImage(
-                            imageUrl = user?.photoUrl,
+                            imageUrl = pfp,
                             modifier = Modifier
                                 .size(100.dp)
                                 .border(
@@ -127,7 +129,6 @@ fun NewProfileScreen(navController: NavHostController) {
                                 )
                                 .padding(3.dp)
                                 .clip(CircleShape),
-                            initial = user?.displayName?.first() ?: 'A'
                         )
                     }
                     Row(
@@ -137,7 +138,7 @@ fun NewProfileScreen(navController: NavHostController) {
                         horizontalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            text = user?.displayName ?: "User Name",
+                            text = name ?: "User Name",
                             color = textColor,
                             fontSize = 20.sp,
                             fontFamily = monteBold,
@@ -150,7 +151,7 @@ fun NewProfileScreen(navController: NavHostController) {
                         horizontalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            text = "${user?.email ?: "User Email"} | $myPhoneNumber",
+                            text = "${email ?: "User Email"} | $myPhoneNumber",
                             color = textColor,
                             fontSize = 12.sp,
                             fontFamily = monteSB,
