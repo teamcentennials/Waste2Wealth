@@ -5,6 +5,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
@@ -50,18 +52,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import app.waste2wealth.com.R
 import app.waste2wealth.com.UserDatastore
 import app.waste2wealth.com.firebase.firestore.updateInfoToFirebase
 import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.ui.theme.appBackground
+import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
@@ -119,6 +126,13 @@ fun CompleteProfile(navHostController: NavHostController) {
     var isGenderExpansded by remember {
         mutableStateOf(false)
     }
+    val token = stringResource(R.string.default_web_client_id)
+    val gso =
+        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(token)
+            .requestEmail().requestProfile()
+            .build()
+    val googleSignInClient = GoogleSignIn.getClient(context, gso)
     var listOfOrganizations by remember {
         mutableStateOf(
             mutableListOf(
@@ -154,7 +168,17 @@ fun CompleteProfile(navHostController: NavHostController) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 30.dp, top = 30.dp),
+                    .padding(bottom = 30.dp, top = 30.dp)
+                    .clickable {
+                        coroutineScope.launch {
+                            dataStore.saveEmail("")
+                            dataStore.savePfp("")
+                            dataStore.saveName("")
+                        }
+                        Firebase.auth.signOut()
+                        googleSignInClient.signOut()
+                        navHostController.navigate(Screens.Onboarding.route)
+                    },
                 horizontalArrangement = Arrangement.Start
             ) {
                 Icon(
@@ -240,10 +264,11 @@ fun CompleteProfile(navHostController: NavHostController) {
                 onValueChanged = {
                     phone = it
                 },
-                keyboardType = KeyboardType.Email,
+                keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
                 isTrailingVisible = true,
                 trailingIcon = Icons.Filled.Send,
+                ifIsOtp = true,
                 onTrailingClick = {
                     currentActivity?.let {
                         val callbacks =
@@ -297,7 +322,7 @@ fun CompleteProfile(navHostController: NavHostController) {
                 onValueChanged = {
                     otp = it
                 },
-                keyboardType = KeyboardType.Text,
+                keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
                 isEnabled = isOtpSent,
             )
@@ -459,6 +484,7 @@ fun TextFieldWithIcons(
     isTrailingVisible: Boolean = false,
     trailingIcon: ImageVector? = null,
     onTrailingClick: () -> Unit = {},
+    ifIsOtp: Boolean = false,
     isEnabled: Boolean = true,
     onValueChanged: (TextFieldValue) -> Unit,
 ) {
@@ -473,14 +499,38 @@ fun TextFieldWithIcons(
         },
         trailingIcon = {
             if (isTrailingVisible && trailingIcon != null) {
-                IconButton(onClick = {
-                    onTrailingClick()
-                }) {
-                    Icon(
-                        imageVector = trailingIcon,
-                        tint = textColor,
-                        contentDescription = "Icon"
-                    )
+                if (!ifIsOtp) {
+                    IconButton(onClick = {
+                        onTrailingClick()
+                    }) {
+                        Icon(
+                            imageVector = trailingIcon,
+                            tint = textColor,
+                            contentDescription = "Icon"
+                        )
+                    }
+                } else {
+                    Button(
+                        onClick = {
+                            onTrailingClick()
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color(0xFFB0EDF5),
+                            contentColor = Color.White
+                        ),
+                        shape = RoundedCornerShape(35.dp),
+                        modifier = Modifier.padding(start = 10.dp)
+                    ) {
+                        Text(
+                            text = "Get OTP",
+                            color = Color.Black,
+                            fontSize = 12.sp,
+                            fontFamily = monteBold,
+                            modifier = Modifier.padding(bottom = 4.dp),
+                            maxLines = 1,
+                            softWrap = true
+                        )
+                    }
                 }
             }
         },

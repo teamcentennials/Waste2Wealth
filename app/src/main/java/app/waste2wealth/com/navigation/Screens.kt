@@ -14,6 +14,7 @@ sealed class Screens(val route: String) {
     object MyRecordings : Screens("myRecordings")
     object StopRecording : Screens("stopRecording")
     object Rewards : Screens("rewards")
+    object RewardsDetails : Screens("rewardsDetails")
     object LoginScreen : Screens("login")
     object Dashboard : Screens("dashboard")
     object Profile : Screens("profile")

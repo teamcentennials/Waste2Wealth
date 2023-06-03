@@ -34,6 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -41,20 +42,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import app.waste2wealth.com.R
+import app.waste2wealth.com.UserDatastore
 import app.waste2wealth.com.bottombar.BottomBar
 import app.waste2wealth.com.components.permissions.PermissionDrawer
 import app.waste2wealth.com.firebase.firestore.ProfileInfo
+import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.jet.firestore.JetFirestore
 import com.jet.firestore.getListOfObjects
+import kotlinx.coroutines.launch
 
 @OptIn(
     ExperimentalPermissionsApi::class, ExperimentalMaterialApi::class,
@@ -73,9 +84,20 @@ fun NewProfileScreen(
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
     )
+    val context = LocalContext.current
+    val token = stringResource(R.string.default_web_client_id)
+    val dataStore = UserDatastore(context)
+    val coroutineScope = rememberCoroutineScope()
     val permissionDrawerState = rememberBottomDrawerState(
         if (permissionState.allPermissionsGranted) BottomDrawerValue.Closed else BottomDrawerValue.Open
     )
+    var user by remember { mutableStateOf(Firebase.auth.currentUser) }
+    val gso =
+        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(token)
+            .requestEmail().requestProfile()
+            .build()
+    val googleSignInClient = GoogleSignIn.getClient(context, gso)
     PermissionDrawer(
         drawerState = permissionDrawerState,
         permissionState = permissionState,
@@ -210,7 +232,16 @@ fun NewProfileScreen(
                     }
 
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            coroutineScope.launch {
+                                dataStore.saveEmail("")
+                                dataStore.savePfp("")
+                                dataStore.saveName("")
+                            }
+                            Firebase.auth.signOut()
+                            googleSignInClient.signOut()
+                            navController.navigate(Screens.Onboarding.route)
+                        },
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = Color(0xFFFD5065),
                             contentColor = Color.White

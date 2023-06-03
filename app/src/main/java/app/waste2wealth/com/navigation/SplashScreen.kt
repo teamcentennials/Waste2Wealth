@@ -23,7 +23,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(navController: NavController) {
+fun SplashScreen(navController: NavController, email: String) {
     val scale = remember {
         androidx.compose.animation.core.Animatable(0f)
     }

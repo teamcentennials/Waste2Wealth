@@ -33,7 +33,8 @@ import app.waste2wealth.com.login.onboarding.SettingUp
 import app.waste2wealth.com.profile.NewProfileScreen
 import app.waste2wealth.com.qrcode.ui.ScanQr
 import app.waste2wealth.com.reportwaste.ReportWaste
-import app.waste2wealth.com.rewards.RewardsScreen
+import app.waste2wealth.com.rewards.NewRewardsScreen
+import app.waste2wealth.com.rewards.RewardDetails
 import app.waste2wealth.com.successtask.DeliveryDetailsScreen
 import app.waste2wealth.com.tasksDetail.TasksDetails
 import app.waste2wealth.com.tasksList.TasksLists
@@ -195,11 +196,20 @@ fun NavigationController(
             )
         }
         composable(Screens.Rewards.route) {
-            RewardsScreen(
+            NewRewardsScreen(
                 navController = navController,
                 email = email.value,
                 name = name.value,
-                pfp = profile.value
+                pfp = profile.value,
+                viewModel = viewModel
+            )
+        }
+        composable(Screens.RewardsDetails.route) {
+            RewardDetails(
+                navController = navController,
+                email = email.value,
+                viewModel = viewModel,
+                name = name.value,
             )
         }
         composable(
@@ -269,7 +279,7 @@ fun NavigationController(
         }
         
         composable(Screens.Splash.route){
-            SplashScreen(navController = navController)
+            SplashScreen(navController = navController, email = email.value)
         }
 
     }

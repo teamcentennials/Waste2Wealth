@@ -44,6 +44,10 @@ class LocationViewModel @Inject constructor(
     var wastePhoto = mutableStateOf("")
     var beforeActivityPath = mutableStateOf("")
     var activityTitle = mutableStateOf("")
+    var rewardImage = mutableStateOf("")
+    var rewardTitle = mutableStateOf("")
+    var rewardDescription = mutableStateOf("")
+    var rewardNoOfPoints = mutableStateOf(0)
     var startActivityTime = mutableStateOf(0L)
     var listOfAddresses by mutableStateOf(mutableListOf<String?>(null))
 
