@@ -23,12 +23,12 @@ val challengesList = listOf(
         type = "Weekly"
     ),
     Challenges(
-        date = "23th Monday 2023",
+        date = "21st Monday 2023",
         time = "10:00 AM",
         location = "Kathmandu",
         points = 100,
         image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-225f8.appspot.com/o/image%207.png?alt=media&token=5ee8672f-b690-408b-b15a-756e4da1f952",
-        title = "Dadar Beach Clean up",
+        title = "Mangroves Cleanup",
         emoji = "\uD83D\uDE13",
         type = "Monthly"
     )

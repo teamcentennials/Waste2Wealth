@@ -36,7 +36,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
-import androidx.compose.material.icons.filled.Feedback
+import androidx.compose.material.icons.filled.Feed
 import androidx.compose.material.icons.filled.UploadFile
 import androidx.compose.material.rememberBottomDrawerState
 import androidx.compose.runtime.Composable
@@ -73,6 +73,7 @@ import app.waste2wealth.com.firebase.firestore.updateInfoToFirebase
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.login.TextFieldWithIcons
 import app.waste2wealth.com.navigation.Screens
+import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
@@ -220,6 +221,9 @@ fun SuccessfullyCollected(
                                 modifier = Modifier
                                     .padding(start = 15.dp)
                                     .size(25.dp)
+                                    .clickable {
+                                        navController.popBackStack()
+                                    }
                             )
                             Row(
                                 modifier = Modifier
@@ -239,7 +243,7 @@ fun SuccessfullyCollected(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(50.dp)
-                                .padding(bottom = 5.dp),
+                                .padding(bottom = 5.dp, top = 10.dp),
                             horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -282,7 +286,7 @@ fun SuccessfullyCollected(
                                             receiver = value
                                         },
                                         colors = RadioButtonDefaults.colors(
-                                            selectedColor = Color(0xFFFD5065),
+                                            selectedColor = textColor,
                                             unselectedColor = Color.Gray
                                         )
                                     )
@@ -292,7 +296,7 @@ fun SuccessfullyCollected(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(bottom = 0.dp, top = 15.dp)
+                                .padding(bottom = 0.dp, top = 10.dp)
                                 .height(50.dp),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
@@ -336,7 +340,7 @@ fun SuccessfullyCollected(
                                             receiver2 = value
                                         },
                                         colors = RadioButtonDefaults.colors(
-                                            selectedColor = Color(0xFFFD5065),
+                                            selectedColor = textColor,
                                             unselectedColor = Color.Gray
                                         )
                                     )
@@ -350,9 +354,9 @@ fun SuccessfullyCollected(
                                 .padding(10.dp)
                         ) {
                             TextFieldWithIcons(
-                                textValue = "Feedback",
-                                placeholder = "Feedback",
-                                icon = Icons.Filled.Feedback,
+                                textValue = "Did you face any problem ?",
+                                placeholder = "Start typing here",
+                                icon = Icons.Filled.Feed,
                                 mutableText = feedback,
                                 keyboardType = KeyboardType.Text,
                                 imeAction = ImeAction.Default,
@@ -374,12 +378,13 @@ fun SuccessfullyCollected(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(start = 10.dp, top = 30.dp)
+                                .padding(start = 10.dp, top = 0.dp)
                         ) {
                             Text(
-                                text = "Waste Photograph",
+                                text = "Upload proof here",
                                 color = textColor,
-                                fontSize = 15.sp
+                                fontSize = 15.sp,
+                                fontFamily = monteSB
                             )
                         }
                         Card(
@@ -413,7 +418,7 @@ fun SuccessfullyCollected(
                                     Icon(
                                         imageVector = Icons.Filled.UploadFile,
                                         contentDescription = "",
-                                        tint = textColor,
+                                        tint = CardColor,
                                         modifier = Modifier.size(60.dp)
                                     )
                                     Text(
@@ -421,6 +426,7 @@ fun SuccessfullyCollected(
                                         color = textColor,
                                         fontSize = 16.sp
                                     )
+                                    Spacer(modifier = Modifier.height(30.dp))
                                 }
                             } else {
                                 Image(
@@ -520,7 +526,7 @@ fun SuccessfullyCollected(
                                 }
                             },
                             colors = ButtonDefaults.buttonColors(
-                                backgroundColor = Color(0xFFFD5065),
+                                backgroundColor = textColor,
                                 contentColor = Color.White
                             ),
                             shape = RoundedCornerShape(35.dp),

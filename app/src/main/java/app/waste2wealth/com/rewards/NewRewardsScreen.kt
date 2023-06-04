@@ -272,7 +272,7 @@ fun NewRewardsScreen(
                                                 Column {
                                                     Card(
                                                         modifier = Modifier.padding(0.dp),
-                                                        backgroundColor = appBackground,
+                                                        backgroundColor = Color.White,
                                                         shape = RoundedCornerShape(10.dp)
                                                     ) {
                                                         AsyncImage(
@@ -292,7 +292,7 @@ fun NewRewardsScreen(
                                                     ) {
                                                         Text(
                                                             text = "Ends in 2 days",
-                                                            color = textColor,
+                                                            color = Color.White,
                                                             fontSize = 10.sp,
                                                             fontFamily = monteBold,
                                                             modifier = Modifier.padding(
@@ -348,7 +348,7 @@ fun NewRewardsScreen(
                                                     ) {
                                                         Text(
                                                             text = "Ends in 2 days",
-                                                            color = textColor,
+                                                            color = Color.White,
                                                             fontSize = 10.sp,
                                                             fontFamily = monteBold,
                                                             modifier = Modifier.padding(
@@ -420,7 +420,7 @@ fun NewRewardsScreen(
                                                     ) {
                                                         Text(
                                                             text = "Ends in 2 days",
-                                                            color = textColor,
+                                                            color = Color.White,
                                                             fontSize = 10.sp,
                                                             fontFamily = monteBold,
                                                             modifier = Modifier.padding(

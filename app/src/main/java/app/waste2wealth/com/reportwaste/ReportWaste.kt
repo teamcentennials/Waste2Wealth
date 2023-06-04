@@ -9,6 +9,7 @@ import androidx.activity.result.launch
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,6 +19,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.relocation.BringIntoViewRequester
@@ -32,10 +34,10 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuBox
 import androidx.compose.material.Icon
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
-import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
@@ -62,6 +64,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -229,7 +232,10 @@ fun ReportWaste(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = 30.dp, start = 0.dp),
+                                .padding(top = 30.dp, start = 0.dp)
+                                .clickable {
+                                    navController.popBackStack()
+                                },
                             horizontalArrangement = Arrangement.Start
                         ) {
                             Icon(
@@ -242,13 +248,15 @@ fun ReportWaste(
                             )
 
                             Row(
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .offset(x = (-10).dp),
                                 horizontalArrangement = Arrangement.Center
                             ) {
                                 Text(
                                     text = "Report Waste",
                                     color = textColor,
-                                    fontFamily = monteSB,
+                                    fontFamily = monteBold,
                                     fontSize = 25.sp
                                 )
                             }
@@ -261,7 +269,8 @@ fun ReportWaste(
                             Text(
                                 text = "Waste Photograph",
                                 color = textColor,
-                                fontSize = 15.sp
+                                fontSize = 15.sp,
+                                fontFamily = monteSB
                             )
                         }
                         Card(
@@ -295,14 +304,16 @@ fun ReportWaste(
                                     Icon(
                                         imageVector = Icons.Filled.UploadFile,
                                         contentDescription = "",
-                                        tint = textColor,
-                                        modifier = Modifier.size(60.dp)
+                                        tint = Color(0xFFCFDCFE),
+                                        modifier = Modifier.size(100.dp)
                                     )
                                     Text(
-                                        text = "Upload Proof of Attempt",
+                                        text = "Upload Photo of Waste",
                                         color = textColor,
-                                        fontSize = 16.sp
+                                        fontSize = 16.sp,
+                                        fontFamily = monteSB
                                     )
+                                    Spacer(modifier = Modifier.height(30.dp))
                                 }
                             } else {
                                 Image(
@@ -325,15 +336,16 @@ fun ReportWaste(
                                 }
                         ) {
                             Text(
-                                text = "Choose Your Location",
+                                text = "Type Your Location",
                                 color = textColor,
-                                fontSize = 15.sp
+                                fontSize = 15.sp,
+                                fontFamily = monteSB
                             )
                         }
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(start = 10.dp, top = 30.dp)
+                                .padding(start = 10.dp, top = 10.dp)
                         ) {
                             ExposedDropdownMenuBox(
                                 expanded = isExpanded,
@@ -341,7 +353,7 @@ fun ReportWaste(
                                     isExpanded = it
                                 }
                             ) {
-                                TextField(
+                                OutlinedTextField(
                                     value = address,
                                     onValueChange = {
                                         if (it.length <= 200) {
@@ -355,7 +367,12 @@ fun ReportWaste(
                                         }
                                     },
                                     colors = TextFieldDefaults.textFieldColors(
-                                        textColor = textColor
+                                        textColor = textColor, backgroundColor = appBackground
+                                    ),
+                                    textStyle = TextStyle(
+                                        color = textColor,
+                                        fontFamily = monteSB,
+                                        fontSize = 16.sp
                                     ),
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -366,7 +383,8 @@ fun ReportWaste(
                                                     bringIntoViewRequester.bringIntoView()
                                                 }
                                             }
-                                        },
+                                        }
+                                        .border(1.dp, textColor),
 
                                     )
                                 ExposedDropdownMenu(
@@ -414,7 +432,7 @@ fun ReportWaste(
                                     tint = Color.Unspecified
                                 )
                                 Text(
-                                    text = "8999999",
+                                    text = "20",
                                     color = textColor,
                                     fontSize = 15.sp,
                                     fontFamily = monteNormal,
@@ -436,7 +454,7 @@ fun ReportWaste(
                             onClick = {
                                 isDialogVisible = true
                             }, colors = ButtonDefaults.buttonColors(
-                                backgroundColor = Color(0xFFFD5065),
+                                backgroundColor = textColor,
                                 contentColor = Color.White
                             ),
                             shape = RoundedCornerShape(35.dp),
@@ -444,7 +462,7 @@ fun ReportWaste(
                         ) {
                             Text(
                                 text = "Report Waste",
-                                color = textColor,
+                                color = Color.White,
                                 fontFamily = monteNormal,
                                 fontSize = 15.sp
                             )

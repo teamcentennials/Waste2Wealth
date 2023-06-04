@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -134,6 +135,9 @@ fun CollectWasteInfo(
                         modifier = Modifier
                             .padding(start = 15.dp)
                             .size(25.dp)
+                            .clickable {
+                                navController.popBackStack()
+                            }
                     )
                     Row(
                         modifier = Modifier
@@ -157,6 +161,7 @@ fun CollectWasteInfo(
                     distance = viewModel.distance.value,
                     time = viewModel.time.value,
                     isCollectedInfo = true,
+                    isEllipsis = false,
                     onCollected = {
                         val gmmIntentUri =
                             Uri.parse(
@@ -208,7 +213,7 @@ fun CollectWasteInfo(
                             }
                         },
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color(0xFFFD5065),
+                            backgroundColor = textColor,
                             contentColor = Color.White
                         ),
                         shape = RoundedCornerShape(35.dp),

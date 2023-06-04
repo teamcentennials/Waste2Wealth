@@ -50,7 +50,9 @@ import app.waste2wealth.com.components.permissions.PermissionDrawer
 import app.waste2wealth.com.firebase.firestore.WasteItem
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.navigation.Screens
+import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.appBackground
+import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -122,6 +124,9 @@ fun CollectWaste(
                             modifier = Modifier
                                 .padding(start = 15.dp)
                                 .size(25.dp)
+                                .clickable {
+                                    navController.popBackStack()
+                                }
                         )
                         Row(
                             modifier = Modifier
@@ -132,7 +137,7 @@ fun CollectWaste(
                             Text(
                                 text = "Collect Waste",
                                 color = textColor,
-                                fontFamily = monteSB,
+                                fontFamily = monteBold,
                                 fontSize = 25.sp
                             )
                         }
@@ -210,6 +215,7 @@ fun WasteItemCard(
     distance: String,
     time: String,
     isCollectedInfo: Boolean = false,
+    isEllipsis: Boolean = true,
     onCollected: () -> Unit = {},
     onClick: () -> Unit = {}
 ) {
@@ -221,7 +227,7 @@ fun WasteItemCard(
                 onClick()
             },
         shape = RoundedCornerShape(10.dp),
-        backgroundColor = Color(0xFFD5E1DA),
+        backgroundColor = CardColor,
         elevation = 5.dp
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -237,7 +243,7 @@ fun WasteItemCard(
                 Icon(
                     imageVector = Icons.Filled.LocationOn,
                     contentDescription = "",
-                    tint = Color.Black,
+                    tint = Color.Gray,
                     modifier = Modifier
                         .size(25.dp)
                         .padding(end = 10.dp)
@@ -245,7 +251,7 @@ fun WasteItemCard(
 
                 Text(
                     text = locationNo,
-                    color = Color.Black,
+                    color = Color.Gray,
                     fontFamily = monteSB,
                     fontSize = 14.sp
                 )
@@ -257,12 +263,12 @@ fun WasteItemCard(
             ) {
                 Text(
                     text = address,
-                    color = Color.Black,
+                    color = textColor,
                     fontFamily = monteSB,
                     fontSize = 15.sp,
-                    maxLines = 1,
+                    maxLines = if (isEllipsis) 1 else Int.MAX_VALUE,
                     softWrap = true,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = if (isEllipsis) TextOverflow.Ellipsis else TextOverflow.Visible
                 )
             }
             Row(
@@ -274,7 +280,7 @@ fun WasteItemCard(
                         if (isCollectedInfo) onCollected() else onClick()
                     },
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(0xFFFD5065),
+                        backgroundColor = textColor,
                         contentColor = Color.White
                     ),
                     shape = RoundedCornerShape(15.dp),
@@ -295,10 +301,10 @@ fun WasteItemCard(
                     verticalAlignment = Alignment.Bottom
                 ) {
                     Text(
-                        text = "$distance, Reported $time ago",
-                        color = Color.Black,
-                        fontFamily = monteSB,
-                        fontSize = 9.sp
+                        text = "$distance, Reported $time",
+                        color = textColor,
+                        fontFamily = monteBold,
+                        fontSize = 10.sp
                     )
 
                 }

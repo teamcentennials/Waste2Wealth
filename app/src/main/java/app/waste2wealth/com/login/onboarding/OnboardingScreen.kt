@@ -55,6 +55,7 @@ import app.waste2wealth.com.UserDatastore
 import app.waste2wealth.com.firebase.firestore.ProfileInfo
 import app.waste2wealth.com.login.rememberFirebaseAuthLauncher
 import app.waste2wealth.com.navigation.Screens
+import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
@@ -74,7 +75,7 @@ fun Onboarding(navHostController: NavHostController) {
 
     items.add(
         ObData(
-            image = R.drawable.ob1,
+            image = R.drawable.appicon,
             title = "Welcome",
             description = "Making Cities Sustainable, Rewarding, and Fun."
         )
@@ -207,8 +208,8 @@ fun Bgresource(
                                 elevation = 20.dp,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .background(appBackground)
                                     .fillMaxHeight(2.5f),
+                                backgroundColor = appBackground
                             )
                             {
                                 Column(
@@ -367,7 +368,7 @@ fun Indicator(isSelected: Boolean) {
             .width(width.value)
             .clip(CircleShape)
             .background(
-                if (isSelected) Color(0xFF55C1D4) else Color(0xFFF8D6A1)
+                if (isSelected) textColor else CardColor
             )
     )
 }
