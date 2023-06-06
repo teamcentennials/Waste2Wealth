@@ -18,6 +18,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -214,7 +215,9 @@ fun Clubs() {
                             fontSize = 20.sp,
                             fontFamily = monteBold,
                             textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 10.dp)
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
@@ -251,7 +254,9 @@ fun Clubs() {
                             overflow = TextOverflow.Ellipsis
                         )
                         Spacer(modifier = Modifier.height(10.dp))
-                        val text = mutableStateOf("Join Now")
+                        val text = remember {
+                            mutableStateOf("Join Now")
+                        }
                         Button(
                             onClick = { text.value = "Joined" },
                             colors = ButtonDefaults.buttonColors(
