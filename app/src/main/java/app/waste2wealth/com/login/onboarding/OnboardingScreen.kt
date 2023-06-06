@@ -168,6 +168,7 @@ fun Bgresource(
                 user = result.user
             },
             onAuthError = {
+                println(it)
                 user = null
             }
         )

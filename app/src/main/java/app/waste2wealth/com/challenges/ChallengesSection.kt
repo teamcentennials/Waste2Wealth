@@ -62,7 +62,7 @@ fun Community(
     pfp: String
 ) {
 
-    val cList = listOf("Challenges", "Clubs", "Posts")
+    val cList = listOf("Challenges", "Organizations")
     var tabIndex by remember { mutableStateOf(0) }
     val permissionState = rememberMultiplePermissionsState(
         permissions = listOf(
@@ -247,6 +247,7 @@ fun Community(
                                     .background(appBackground)
                                     .padding(end = 20.dp),
                                 text = "Comment",
+                                color = Color.Black
                             )
 
                             Spacer(modifier = Modifier.height(50.dp))
@@ -257,6 +258,7 @@ fun Community(
                                     .background(appBackground)
                                     .padding(end = 20.dp),
                                 text = "      Kudos",
+                                color = Color.Black
                             )
                             Icon(
                                 painter = painterResource(id = R.drawable.kright),
@@ -271,7 +273,6 @@ fun Community(
                         when (tabIndex) {
                             0 -> Challenges()
                             1 -> Clubs()
-                            2 -> Posts()
                         }
                     }
 

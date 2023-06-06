@@ -13,8 +13,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomDrawerValue
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -98,6 +100,7 @@ fun NewProfileScreen(
             .requestEmail().requestProfile()
             .build()
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
+    val scrollable = rememberScrollState()
     PermissionDrawer(
         drawerState = permissionDrawerState,
         permissionState = permissionState,
@@ -112,8 +115,10 @@ fun NewProfileScreen(
             println(it)
             Column(
                 modifier = Modifier
+                    .verticalScroll(scrollable)
                     .fillMaxSize()
                     .background(appBackground)
+                    .padding(bottom = 50.dp)
             ) {
                 var profileList by remember {
                     mutableStateOf<List<ProfileInfo>?>(null)

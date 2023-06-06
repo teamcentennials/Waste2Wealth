@@ -125,7 +125,6 @@ fun NavigationController(
 //            DashBoardPage(navHostController = navController, locationViewModel = locationViewModel)
         }
         composable(Screens.Profile.route) {
-//            ProfileScreen(navHostController = navController)
             NewProfileScreen(
                 navController = navController,
                 email = email.value,

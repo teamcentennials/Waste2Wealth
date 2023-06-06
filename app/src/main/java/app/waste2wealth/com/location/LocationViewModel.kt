@@ -56,9 +56,9 @@ class LocationViewModel @Inject constructor(
         lightSensors.startListening()
         lightSensors.setOnSensorValuesChangedListener { values ->
             val lux = values[0]
-            println("The values are $lux")
+//            println("The values are $lux")
             isDark = lux == 0f
-            println("what is is Dark $isDark")
+//            println("what is is Dark $isDark")
         }
     }
 

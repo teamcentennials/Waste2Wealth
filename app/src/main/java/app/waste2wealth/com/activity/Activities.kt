@@ -37,6 +37,5 @@ val allActivities = listOf(
         emoji = "\uD83D\uDC9B",
         type = "Custom Activity",
     ),
-
-    )
+)
 

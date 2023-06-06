@@ -19,11 +19,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomDrawerValue
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -46,6 +48,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -118,6 +121,7 @@ fun NewDashboard(
         activity?.finishAndRemoveTask()
         exitProcess(0)
     }
+    val scrollState = rememberScrollState()
     JetFirestore(path = {
         collection("ProfileInfo")
     }, onRealtimeCollectionFetch = { value, _ ->
@@ -149,6 +153,7 @@ fun NewDashboard(
                 println(it)
                 Column(
                     modifier = Modifier
+                        .verticalScroll(scrollState)
                         .fillMaxSize()
                         .background(appBackground)
                 ) {
@@ -211,80 +216,75 @@ fun NewDashboard(
                                         }
                                 )
                             }
-                            LazyVerticalGrid(
-                                columns = GridCells.Fixed(2),
-                                modifier = Modifier.fillMaxWidth()
+                            Row(
+//                                columns = GridCells.Fixed(2),
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center
                             ) {
-                                item {
-                                    Column(
-                                        modifier = Modifier
-                                            .padding(top = 15.dp)
-                                            .offset(x = (-15).dp),
-                                        horizontalAlignment = Alignment.CenterHorizontally,
-                                        verticalArrangement = Arrangement.Center
-                                    ) {
-                                        Text(
-                                            text = "Points Earned",
-                                            color = textColor,
-                                            fontSize = 14.sp,
-                                            fontFamily = monteBold,
-                                            softWrap = true,
-                                            modifier = Modifier.padding(start = 7.dp)
+                                Column(
+                                    modifier = Modifier.padding(top = 15.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Text(
+                                        text = "Points Earned",
+                                        color = textColor,
+                                        fontSize = 14.sp,
+                                        fontFamily = monteBold,
+                                        softWrap = true,
+                                        modifier = Modifier.padding(start = 7.dp)
+                                    )
+                                    Row(modifier = Modifier.padding(end = 0.dp, top = 7.dp)) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.coins),
+                                            contentDescription = "coins",
+                                            modifier = Modifier
+                                                .size(20.dp)
+                                                .padding(end = 5.dp),
+                                            tint = Color.Unspecified
                                         )
-                                        Row(modifier = Modifier.padding(end = 0.dp, top = 7.dp)) {
-                                            Icon(
-                                                painter = painterResource(id = R.drawable.coins),
-                                                contentDescription = "coins",
-                                                modifier = Modifier
-                                                    .size(20.dp)
-                                                    .padding(end = 5.dp),
-                                                tint = Color.Unspecified
-                                            )
-                                            Text(
-                                                text = pointsEarned,
-                                                color = textColor,
-                                                fontSize = 15.sp,
-                                                fontFamily = monteNormal,
-                                            )
-                                        }
-
-                                    }
-                                }
-                                item {
-                                    Column(
-                                        modifier = Modifier
-                                            .padding(top = 15.dp)
-                                            .offset(x = (-15).dp),
-                                        horizontalAlignment = Alignment.CenterHorizontally,
-                                        verticalArrangement = Arrangement.Center
-                                    ) {
                                         Text(
-                                            text = "Points Redeemed",
+                                            text = pointsEarned,
                                             color = textColor,
-                                            fontSize = 14.sp,
-                                            fontFamily = monteBold,
-                                            softWrap = true,
-                                            modifier = Modifier.padding(start = 7.dp)
+                                            fontSize = 15.sp,
+                                            fontFamily = monteNormal,
                                         )
-                                        Row(modifier = Modifier.padding(end = 0.dp, top = 7.dp)) {
-                                            Icon(
-                                                painter = painterResource(id = R.drawable.coins),
-                                                contentDescription = "coins",
-                                                modifier = Modifier
-                                                    .size(20.dp)
-                                                    .padding(end = 5.dp),
-                                                tint = Color.Unspecified
-                                            )
-                                            Text(
-                                                text = pointsRedeemed,
-                                                color = textColor,
-                                                fontSize = 15.sp,
-                                                fontFamily = monteNormal,
-                                            )
-                                        }
-
                                     }
+
                                 }
+                                Spacer(modifier = Modifier.width(20.dp))
+                                Column(
+                                    modifier = Modifier.padding(top = 15.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Text(
+                                        text = "Points Redeemed",
+                                        color = textColor,
+                                        fontSize = 14.sp,
+                                        fontFamily = monteBold,
+                                        softWrap = true,
+                                        modifier = Modifier.padding(start = 7.dp)
+                                    )
+                                    Row(modifier = Modifier.padding(end = 0.dp, top = 7.dp)) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.coins),
+                                            contentDescription = "coins",
+                                            modifier = Modifier
+                                                .size(20.dp)
+                                                .padding(end = 5.dp),
+                                            tint = Color.Unspecified
+                                        )
+                                        Text(
+                                            text = pointsRedeemed,
+                                            color = textColor,
+                                            fontSize = 15.sp,
+                                            fontFamily = monteNormal,
+                                        )
+                                    }
+
+                                }
+
                             }
                             Spacer(modifier = Modifier.height(15.dp))
                         }
@@ -383,15 +383,18 @@ fun NewDashboard(
                                         .padding(horizontal = 13.dp)
                                 )
                                 Text(
-                                    text = "   Collect Waste   ",
+                                    text = "Collect Waste",
                                     color = textColor,
                                     fontFamily = monteBold,
-                                    modifier = Modifier.padding(
-                                        top = 0.dp,
-                                        start = 10.dp,
-                                        end = 10.dp,
-                                        bottom = 5.dp
-                                    )
+                                    modifier = Modifier
+                                        .padding(
+                                            top = 0.dp,
+                                            start = 10.dp,
+                                            end = 10.dp,
+                                            bottom = 5.dp
+                                        )
+                                        .fillMaxWidth(),
+                                    textAlign = TextAlign.Center
                                 )
                                 Row(modifier = Modifier.padding(end = 0.dp, top = 7.dp)) {
                                     Icon(
@@ -418,8 +421,8 @@ fun NewDashboard(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 20.dp, end = 25.dp),
-                        horizontalArrangement = Arrangement.Center,
+                            .padding(start = 20.dp, end = 20.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
@@ -428,34 +431,35 @@ fun NewDashboard(
                             fontSize = 16.sp,
                             fontFamily = monteBold,
                         )
+                        Text(
+                            text = "See all...",
+                            color = textColor,
+                            fontSize = 16.sp,
+                            fontFamily = monteNormal,
+                            modifier = Modifier.clickable {
+                                navController.navigate(Screens.Community.route)
+                            }
+                        )
                     }
 
 
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
+                    LazyRow(
                         modifier = Modifier.padding(
-                            bottom = 100.dp,
+                            bottom = 10.dp,
                             start = 15.dp,
                             top = 10.dp,
                             end = 15.dp
                         ),
-                        contentPadding = PaddingValues(bottom = 25.dp)
+                        contentPadding = PaddingValues(bottom = 100.dp)
                     ) {
-                        items(challengesList) { item ->
+                        items(challengesList.take(2)) { item ->
                             RepeatingCard(
-                                type = item.type,
-                                emoji = item.emoji,
                                 title = item.title,
                                 date = item.date
                             )
                         }
-
-
                     }
-
-
                 }
-
             }
         }
     }
@@ -463,8 +467,6 @@ fun NewDashboard(
 
 @Composable
 fun RepeatingCard(
-    type: String,
-    emoji: String,
     title: String,
     date: String
 ) {
@@ -474,19 +476,15 @@ fun RepeatingCard(
             topStart = 10.dp,
             topEnd = 10.dp,
             bottomEnd = 10.dp,
-            bottomStart = 50.dp
+            bottomStart = 10.dp
         ),
         modifier = Modifier.padding(end = 10.dp)
     ) {
         var register by remember { mutableStateOf("Register") }
-        Column(modifier = Modifier.padding(15.dp)) {
-            Text(
-                text = type,
-                color = Color.Gray,
-                fontSize = 13.sp,
-                fontFamily = monteSB,
-                modifier = Modifier.padding(bottom = 10.dp)
-            )
+        Column(
+            modifier = Modifier.padding(15.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Text(
                 text = title,
                 color = textColor,
@@ -512,7 +510,7 @@ fun RepeatingCard(
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(35.dp),
-                modifier = Modifier.padding(start = 10.dp)
+                modifier = Modifier.padding(vertical = 10.dp)
             ) {
                 Text(
                     text = register,
