@@ -1,5 +1,6 @@
-# Waste2Wealth- Team Centennials
-## Making Cities Sustainable Rewarding and Fun
+<<<<<<< HEAD
+# Waste2Wealth
+Making Cities Sustainable, Rewarding, and Fun It's the app that makes a difference. Help us clean up our communities, And earn rewards for your efforts.
 
 ![Waste2Wealth]
 
@@ -7,3 +8,7 @@
 
 
 
+=======
+# Waste2Wealth
+Making Cities Sustainable, Rewarding, and Fun It's the app that makes a difference. Help us clean up our communities, And earn rewards for your efforts.
+>>>>>>> 77f0ccf18385ba904954a54f71520b86a2cc131e
