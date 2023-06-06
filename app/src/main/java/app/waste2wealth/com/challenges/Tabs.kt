@@ -251,7 +251,7 @@ fun Clubs() {
                             overflow = TextOverflow.Ellipsis
                         )
                         Spacer(modifier = Modifier.height(10.dp))
-                        var text = mutableStateOf("Join Now")
+                        val text = mutableStateOf("Join Now")
                         Button(
                             onClick = { text.value = "Joined" },
                             colors = ButtonDefaults.buttonColors(
