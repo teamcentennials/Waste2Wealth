@@ -53,7 +53,8 @@ Note :- This Applications is Developed in latest Andriod Studio Canary Build Kin
 
 ## Technologies
 __________________________________________________________________________________________________________________________________________________
-![alt text](https://img.shields.io/badge/Kotlin-FFFFFF?style=for-the-badge&logo=Kotlin)  ![alt text](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=Angular) ![alt text](https://img.shields.io/badge/Firebase-FFFFFF?style=for-the-badge&logo=Firebase) ![alt text](https://img.shields.io/badge/GoogleCloud-FFFFFF?style=for-the-badge&logo=GoogleCloud)![alt text](https://img.shields.io/badge/JetpackCompose-FFFFFF?style=for-the-badge&logo=JetpackCompose)
+![alt text](https://img.shields.io/badge/Kotlin-FFFFFF?style=for-the-badge&logo=Kotlin) ![alt text](https://img.shields.io/badge/Firebase-FFFFFF?style=for-the-badge&logo=Firebase) ![alt text](https://img.shields.io/badge/GoogleCloud-FFFFFF?style=for-the-badge&logo=GoogleCloud) ![alt text](https://img.shields.io/badge/JetpackCompose-FFFFFF?style=for-the-badge&logo=JetpackCompose)
+
 
 ## Achievement 
 ___________________________________________________________________________________________________________________________________________________
