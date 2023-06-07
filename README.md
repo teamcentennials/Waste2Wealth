@@ -20,7 +20,7 @@ Waste2Wealth is a state-of-the-art mobile application that empowers individuals 
 
 ## Demo Video
 ___
-> Youtube Video Link: https://www.youtube.com/watch?
+> Demo Video Link: [Click here](https://youtu.be/90SDLmkjCcc)
 
 ## UN Sustainable Development Goals And Targets
 ___________________________________________________________________________________________________________________________________________________
