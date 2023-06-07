@@ -1,5 +1,6 @@
 # Waste2Wealth
-Making Cities Sustainable, Rewarding, and Fun It's the app that makes a difference. 
+Making Cities Sustainable, Rewarding, and Fun 
+It's the app that makes a difference. 
 Help us clean up our communities, And earn rewards for your efforts.
 
 
@@ -22,15 +23,6 @@ Waste2Wealth is a cutting-edge mobile application that empowers individuals to c
 ___
 > Youtube Video Link: https://www.youtube.com/watch?
 
-## Table of Content
-________________________________________________________________________________________________________________________________________________
-  <ol>
-    <li><a href="#technologies">Technologies</a></li>
-    <li><a href="#un-sustainable-development-goals-and-targets">UN Sustainable Development Goals And Targets</a></li>
-    <li><a href="#core-functionalities">Core Functionalities</a></li>
-    <li><a href="#distribution">Distribution</a></li>
-  </ol>
-
 ## UN Sustainable Development Goals And Targets
 ___________________________________________________________________________________________________________________________________________________
 ### SDG 11: Make cities and human settlements inclusive, safe, resilient and sustainable
@@ -51,7 +43,7 @@ We believe that positive reinforcement is key to promoting lasting change. Waste
 ### Location Tracking 🔒:
 Our app incorporates background location tracking, ensuring accurate tracking of the user's movements while minimizing battery usage. This feature allows us to provide real-time information about waste accumulation in different areas and optimize cleanup efforts.
 
-### Community Engagement :
+### Community Engagement 🦾:
 Our app hosts various organizations that actively host social cleanups in the city. These organizations can host their activities as challenges and get the volunteers they need through our application. Volunteers can get rewarded for their participation to keep going and stay motivated.
 
 
@@ -68,4 +60,32 @@ ________________________________________________________________________________
 ___________________________________________________________________________________________________________________________________________________
 
 ![image](https://github.com/teamcentennials/Waste2Wealth/assets/135758555/02d9389f-0076-4b8c-955a-1ffc31dba769)
+
+Event Name: Mumbai Hacks
+Date : 3rd , 4th june 2023
+Duration : 24 hours Hackathon
+
+ Event Description:
+Mumbai's biggest hackathon Mumbai Hacks For the first time organized by the Tech Entrepreneurs Association of Mumbai (TEAM) is a non-profit, independent
+industry body formed with the mission of advancing the tech startup ecosystem of Mumbai. and
+made in mumbai (Community for tech, startups and small businesses) in collaboration with
+Google Developers, Wework labs , Llamalindex and replit, 
+
+ It spanned 24 hours from 3rd June to 4th June and invited participants across India to
+provide Technical Solutions to the following tracks.
+1. Generative AI ( Build for the future with generative AI tools like Bard )
+2. Cybersecurity ( Make our digital world a safer place to live in)
+3. Solve for Mumbai ( Tech that makes Mumbai a better place to live in )
+4. Student Track ( Pick any problem from the three domains and build! )
+
+ The event Hosted over 10 judges, 24 mentors, 4 tracks, and attracted 500+ participants
+ Judges:
+![image](https://github.com/teamcentennials/Waste2Wealth/assets/95966154/fe24dd3c-e080-4255-a921-8c7f8ad385e0)
+ Mentors:
+![image](https://github.com/teamcentennials/Waste2Wealth/assets/95966154/be0a6ffc-ba2a-41c8-b792-278ed69a75e6)
+
+
+During this hackathon we worked on the track Solve for Mumbai and got overwhelming user feedback and on ground metoring from best in the industry 
+
+
 
