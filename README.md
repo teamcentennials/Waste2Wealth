@@ -86,7 +86,7 @@ provide Technical Solutions to the following tracks.
 ![image](https://github.com/teamcentennials/Waste2Wealth/assets/95966154/be0a6ffc-ba2a-41c8-b792-278ed69a75e6)
 
 
-During this hackathon we worked on the track Solve for Mumbai and got overwhelming user feedback and on ground metoring from best in the industry 
+During this hackathon we worked on the track Solve for Mumbai and got overwhelming user feedback and on ground Mentoring from best in the industry 
 
 
 
