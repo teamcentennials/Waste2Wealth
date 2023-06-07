@@ -48,8 +48,9 @@ Our app hosts various organizations that actively host social cleanups in the ci
 
 ## Distribution
 ______________________________________________________________________________________________________________________________________________________
-* Download Apk ✅:- 
-Note :- This Applications is Developed in latest Andriod Studio Canary Build Kindly Run in that.
+ Download Apk ✅- [Click here](https://drive.google.com/drive/folders/1yQvjFDko7IEKAGTaIgRcW-GzbD2S_0OZ)
+ 
+ Note :- This Applications is Developed in latest Andriod Studio Canary Build Kindly Run in that.
 
 ## Technologies
 __________________________________________________________________________________________________________________________________________________
