@@ -45,6 +45,8 @@ Our app incorporates background location tracking, ensuring accurate tracking of
 ### Community Engagement 🦾:
 Our app hosts various organizations that actively host social cleanups in the city. These organizations can host their activities as challenges and get the volunteers they need through our application. Volunteers can get rewarded for their participation to keep going and stay motivated.
 
+<img width="447" alt="image" src="https://github.com/teamcentennials/Waste2Wealth/assets/95966154/4681320c-0241-44fe-b3a2-4c70e6ce48a1">
+
 
 ## Distribution
 ______________________________________________________________________________________________________________________________________________________
